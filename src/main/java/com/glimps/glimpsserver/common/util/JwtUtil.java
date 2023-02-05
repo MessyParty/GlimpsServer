@@ -6,27 +6,38 @@ import java.util.Random;
 
 import org.springframework.stereotype.Component;
 
-import com.glimps.glimpsserver.common.error.CustomException;
 import com.glimps.glimpsserver.common.error.ErrorCode;
+import com.glimps.glimpsserver.common.error.InvalidTokenException;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 
 @Component
 public class JwtUtil {
-	private final Key key;
+	private final JwtBuilder jwtBuilder;
+	private final JwtParser parser;
 
 	public JwtUtil() {
 		byte[] arr = new byte[32];
 		new Random().nextBytes(arr);
-		this.key = Keys.hmacShaKeyFor(arr);
+		Key key = Keys.hmacShaKeyFor(arr);
+
+		jwtBuilder = Jwts.builder()
+			.signWith(key);
+
+		parser = Jwts.parserBuilder()
+			.setSigningKey(key)
+			.build();
 	}
 
 	public String encode(String email) {
-		return Jwts.builder()
-			.signWith(key)
+		// TODO claim에 Role을 추가해야 하는 지 의논 필요
+		return jwtBuilder
 			.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7))
 			.setHeaderParam("type", "jwt")
 			.claim("email", email)
@@ -34,17 +45,17 @@ public class JwtUtil {
 	}
 
 	public Claims decode(String token) {
-		if (token == null || token.isBlank()) {
-			throw new CustomException(ErrorCode.INVALID_TOKEN, "[ERROR] Invalid Token(token :" + token + ")");
-		}
 		try {
-			return Jwts.parserBuilder()
-				.setSigningKey(key)
-				.build()
+			return parser
 				.parseClaimsJws(token)
 				.getBody();
 		} catch (SignatureException e) {
-			throw new CustomException(ErrorCode.INVALID_TOKEN, "[ERROR] Invalid Token(token :" + token + ")");
+			throw new InvalidTokenException(ErrorCode.INVALID_TOKEN, token);
+		} catch (ExpiredJwtException e) {
+			throw new InvalidTokenException(ErrorCode.TOKEN_EXPIRED, token);
+		} catch (Exception e) {
+			throw new InvalidTokenException(ErrorCode.INVALID_TOKEN, token);
 		}
+
 	}
 }

@@ -33,7 +33,7 @@ public class SpringSecurityConfig {
 			http.getSharedObject(AuthenticationConfiguration.class));
 		Filter authenticationFilter = new JwtAuthenticationFilter(authenticationManager, authenticationService);
 		Filter authenticationErrorFilter = new AuthenticationErrorFilter();
-		
+
 		http.csrf().disable();
 
 		http.formLogin().disable();
