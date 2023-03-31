@@ -6,7 +6,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.glimps.glimpsserver.perfume.dto.CreateNoteRequest;
+
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,5 +23,19 @@ public class Note {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String noteName;
+    private String EngName;
+    private String KorName;
+
+    public static Note createNote(CreateNoteRequest createNoteRequest) {
+        return Note.builder()
+            .engName(createNoteRequest.getEngName())
+            .korName(createNoteRequest.getKorName())
+            .build();
+    }
+
+    @Builder
+    public Note(String engName, String korName) {
+        EngName = engName;
+        KorName = korName;
+    }
 }

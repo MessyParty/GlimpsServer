@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,7 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "perfume_notes")
 @Entity
-public class PerfumeNotes {
+public class PerfumeNote {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,4 +31,17 @@ public class PerfumeNotes {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "note_id")
     private Note note;
+
+    public static PerfumeNote addNote(Perfume perfume, Note note) {
+        return PerfumeNote.builder()
+            .perfume(perfume)
+            .note(note)
+            .build();
+    }
+
+    @Builder
+    public PerfumeNote(Perfume perfume, Note note) {
+        this.perfume = perfume;
+        this.note = note;
+    }
 }
