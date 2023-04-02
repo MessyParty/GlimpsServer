@@ -59,7 +59,6 @@ class ReviewServiceTest {
 			.brandNameKor("샤넬")
 			.build();
 	private static final Perfume EXISTS_PERFUME = Perfume.builder()
-		.id(EXISTS_PERFUME_ID)
 		.uuid(EXISTS_PERFUME_UUID)
 		.perfumeName("향수 이름")
 		.brand(TEST_BRAND)

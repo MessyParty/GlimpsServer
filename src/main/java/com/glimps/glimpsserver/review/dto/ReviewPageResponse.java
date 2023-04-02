@@ -48,7 +48,6 @@ public class ReviewPageResponse {
 		return review -> ReviewPageResponse.builder()
 			.title(review.getTitle())
 			.body(review.getBody())
-			.uuid(review.getUuid())
 			.nickname(review.getUser().getNickname())
 			.photoUrl(review.getReviewPhotos().stream()
 				.map(ReviewPhoto::getUrl)

@@ -7,6 +7,7 @@ import javax.persistence.LockModeType;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Query;
 
 import com.glimps.glimpsserver.perfume.domain.Perfume;
 
@@ -14,4 +15,12 @@ public interface PerfumeRepository extends JpaRepository<Perfume, Long> {
 
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	Optional<Perfume> findByUuid(UUID uuid);
+
+	@Query("select p from Perfume p "
+		+ "join fetch p.brand b "
+		+ "join fetch p.perfumeNotes pn "
+		+ "join fetch pn.note "
+		+ "where p.uuid = :uuid")
+	Optional<Perfume> findPerfumeWithEntities(UUID uuid);
+
 }

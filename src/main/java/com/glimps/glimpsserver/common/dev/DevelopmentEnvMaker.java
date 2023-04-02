@@ -65,11 +65,11 @@ public class DevelopmentEnvMaker {
 
 		noteRepository.saveAll(List.of(suede, white, fig));
 
-		PerfumeNote no5Suede = PerfumeNote.addNote(no5, suede);
-		PerfumeNote no5White = PerfumeNote.addNote(no5, white);
+		PerfumeNote no5Suede = PerfumeNote.mapNoteToPerfume(no5, suede);
+		PerfumeNote no5White = PerfumeNote.mapNoteToPerfume(no5, white);
 
-		PerfumeNote oneWhite = PerfumeNote.addNote(One, white);
-		PerfumeNote oneFig = PerfumeNote.addNote(One, fig);
+		PerfumeNote oneWhite = PerfumeNote.mapNoteToPerfume(One, white);
+		PerfumeNote oneFig = PerfumeNote.mapNoteToPerfume(One, fig);
 
 		perfumeNoteRepository.saveAll(List.of(no5White, no5Suede, oneWhite, oneFig));
 

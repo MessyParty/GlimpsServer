@@ -34,28 +34,25 @@ public class SessionController {
 	}
 
 	@Tag(name = "Authentication")
-	@Operation(summary = "OAuth 로그인 요청 전 필수적으로 요청해야 하는 API 입니다.",
-		description = "클라이언트를 확인하고 클라이언트 확인에 필요한 state 값을 반환해줍니다. "
-		+ "요청 시 withCredentials 옵션을 반드시 true로 해줘야 합니다.")
+	@Operation(summary = "OAuth 로그인 요청 전 필수적으로 요청해야 하는 API 입니다.", description =
+		"클라이언트를 확인하고 클라이언트 확인에 필요한 state 값을 반환해줍니다. " + "요청 시 withCredentials 옵션을 반드시 true로 해줘야 합니다.")
 	@GetMapping("/session/state")
 	public OAuthStateResponse session(HttpServletRequest request, HttpServletResponse response,
-		@Parameter(description = "소셜 로그인 서비스의 이름", example = "kakao", required = true)
-		@RequestParam String provider) {
+		@Parameter(description = "소셜 로그인 서비스의 이름", example = "kakao", required = true) @RequestParam String provider) {
 
 		// OAuth 인가 요청을 생성
 		OAuth2AuthorizationRequest oAuth2AuthorizationRequest = oAuth2AuthorizationRequestResolver.resolve(request,
 			provider);
 
 		// 요청을 임시 Session에 저장
-		oauth2Repository.saveAuthorizationRequest(oAuth2AuthorizationRequest, request,
-			response);
+		oauth2Repository.saveAuthorizationRequest(oAuth2AuthorizationRequest, request, response);
 
 		String id = request.getSession().getId();
 		String cookies = response.getHeader("Set-Cookie");
-		if(cookies != null && cookies.contains("JSESSIONID"))
-			response.setHeader("Set-Cookie", "JSESSIONID="+ id + "; Path=/; SameSite=None; Secure; HttpOnly");
-		else if(cookies != null) {
-			response.setHeader("Set-Cookie",  cookies+ "; SameSite=None; Secure");
+		if (cookies != null && cookies.contains("JSESSIONID"))
+			response.setHeader("Set-Cookie", "JSESSIONID=" + id + "; Path=/; SameSite=None; Secure; HttpOnly");
+		else if (cookies != null) {
+			response.setHeader("Set-Cookie", cookies + "; SameSite=None; Secure");
 		}
 		log.info("id = {}", id);
 		log.info("Set-Cookie = {}", response.getHeader("Set-Cookie"));

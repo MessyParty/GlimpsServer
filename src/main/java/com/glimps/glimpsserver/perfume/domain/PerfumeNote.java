@@ -32,7 +32,7 @@ public class PerfumeNote {
     @JoinColumn(name = "note_id")
     private Note note;
 
-    public static PerfumeNote addNote(Perfume perfume, Note note) {
+    public static PerfumeNote mapNoteToPerfume(Perfume perfume, Note note) {
         return PerfumeNote.builder()
             .perfume(perfume)
             .note(note)

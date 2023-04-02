@@ -26,9 +26,6 @@ public class TokenController {
 	@PostMapping("/access-token/issue")
 	public AccessTokenDto logout(HttpServletRequest request) {
 		String authorizationHeader = request.getHeader("Authorization");
-
-		AccessTokenDto accessTokenDto = authenticationService.issueAccessToken(authorizationHeader);
-
-		return accessTokenDto;
+		return authenticationService.issueAccessToken(authorizationHeader);
 	}
 }
