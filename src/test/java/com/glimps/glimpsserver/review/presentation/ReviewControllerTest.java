@@ -129,29 +129,13 @@ class ReviewControllerTest {
 
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
-	@Value("${spring.mvc.servlet.path}")
+	@Value("${api.prefix}")
 	private String contextPath;
 
 	@BeforeEach
 	void setUp() {
 		assertThat(contextPath).isNotBlank();
 		((MockServletContext)mvc.getDispatcherServlet().getServletContext()).setContextPath(contextPath);
-	}
-
-	protected MockHttpServletRequestBuilder createGetRequest(String request) {
-		return get(contextPath + request).contextPath(contextPath);
-	}
-
-	protected MockHttpServletRequestBuilder createPostRequest(String request) {
-		return post(contextPath + request).contextPath(contextPath);
-	}
-
-	protected MockHttpServletRequestBuilder createPatchRequest(String request) {
-		return patch(contextPath + request).contextPath(contextPath);
-	}
-
-	protected MockHttpServletRequestBuilder createDeleteRequest(String request) {
-		return delete(contextPath + request).contextPath(contextPath);
 	}
 
 	// GET 요청 테스트
@@ -178,7 +162,7 @@ class ReviewControllerTest {
 				map.add("offset", "1");
 				map.add("limit", "10");
 
-				mvc.perform(createGetRequest("/reviews")
+				mvc.perform(get(contextPath + "/reviews/")
 						.params(map)
 						.accept(MediaType.APPLICATION_JSON_UTF8)
 						.contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -206,7 +190,7 @@ class ReviewControllerTest {
 				map.add("offset", "1");
 				map.add("limit", "10");
 
-				mvc.perform(createGetRequest("/reviews")
+				mvc.perform(get(contextPath + "/reviews/")
 						.params(map)
 						.accept(MediaType.APPLICATION_JSON_UTF8)
 						.contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -233,7 +217,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("상태코드 200과 리뷰를 응답한다.")
 			void It_responds_200_and_review() throws Exception {
-				mvc.perform(createGetRequest("/reviews/" + EXISTS_REVIEW_UUID)
+				mvc.perform(get(contextPath + "/reviews/" + EXISTS_REVIEW_UUID)
 						.accept(MediaType.APPLICATION_JSON_UTF8)
 						.contentType(MediaType.APPLICATION_JSON_UTF8)
 					)
@@ -256,7 +240,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("상태코드 404를 응답한다.")
 			void It_responds_404() throws Exception {
-				mvc.perform(createGetRequest("/reviews/" + NOT_EXISTS_REVIEW_UUID))
+				mvc.perform(get(contextPath + "/reviews/" + NOT_EXISTS_REVIEW_UUID))
 					.andExpect(status().isNotFound())
 					.andDo(print());
 			}
@@ -278,7 +262,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("상태코드 200과 최근 리뷰를 응답한다")
 			void It_responds_200_and_recent_reviews_by_pagination() throws Exception {
-				mvc.perform(createGetRequest("/reviews/recentReviews")
+				mvc.perform(get(contextPath + "/reviews/recentReviews")
 						.accept(MediaType.APPLICATION_JSON_UTF8)
 						.contentType(MediaType.APPLICATION_JSON_UTF8)
 					)
@@ -299,7 +283,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("상태코드 200과 빈 목록을 응답한다.")
 			void It_responds_200_and_empty_list_by_pagination() throws Exception {
-				mvc.perform(createGetRequest("/reviews/recentReviews")
+				mvc.perform(get(contextPath + "/reviews/recentReviews")
 						.accept(MediaType.APPLICATION_JSON_UTF8)
 						.contentType(MediaType.APPLICATION_JSON_UTF8)
 					)
@@ -326,7 +310,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("상태코드 200과 향수 리뷰를 응답한다.")
 			void It_responds_200_and_perfume_reviews() throws Exception {
-				mvc.perform(createGetRequest("/reviews/perfumeReviews")
+				mvc.perform(get(contextPath + "/reviews/perfumeReviews")
 						.param("perfumeUuid", EXISTS_PERFUME_UUID.toString())
 						.accept(MediaType.APPLICATION_JSON_UTF8)
 						.contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -348,7 +332,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("상태코드 200과 빈 목록을 응답한다.")
 			void It_responds_200_and_empty_list() throws Exception {
-				mvc.perform(createGetRequest("/reviews/perfumeReviews")
+				mvc.perform(get(contextPath + "/reviews/perfumeReviews")
 						.param("perfumeUuid", EXISTS_PERFUME_UUID.toString())
 						.accept(MediaType.APPLICATION_JSON_UTF8)
 						.contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -371,7 +355,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("상태코드 404를 응답한다.")
 			void It_responds_404() throws Exception {
-				mvc.perform(createGetRequest("/reviews/perfumeReviews")
+				mvc.perform(get(contextPath + "/reviews/perfumeReviews")
 						.param("perfumeUuid", NOT_EXISTS_PERFUME_UUID.toString())
 						.accept(MediaType.APPLICATION_JSON_UTF8)
 						.contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -397,7 +381,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("상태코드 200과 베스트 리뷰를 추천 순으로 응답한다.")
 			void It_responds_200_and_best_reviews_by_heart_cnt() throws Exception {
-				mvc.perform(createGetRequest("/reviews/bestReviews")
+				mvc.perform(get(contextPath + "/reviews/bestReviews")
 						.param("amountOfBestReview", "3")
 						.accept(MediaType.APPLICATION_JSON_UTF8)
 						.contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -421,7 +405,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("상태코드 200과 빈 목록을 응답한다.")
 			void It_responds_200_and_empty_list() throws Exception {
-				mvc.perform(createGetRequest("/reviews/bestReviews")
+				mvc.perform(get(contextPath + "/reviews/bestReviews")
 						.param("amountOfBestReview", "3")
 						.accept(MediaType.APPLICATION_JSON_UTF8)
 						.contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -451,7 +435,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("상태코드 200과 리뷰를 페이지로 나누어 반환한다.")
 			void It_responds_200_and_reviews_by_pagination() throws Exception {
-				mvc.perform(createGetRequest("/reviews/myReviews")
+				mvc.perform(get(contextPath + "/reviews/myReviews")
 						.param("offset", "0")
 						.param("limit", "3")
 						.param("orderStandard", "DATE")
@@ -481,7 +465,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("상태코드 200과 빈 목록을 응답한다.")
 			void It_responds_200_and_empty_list() throws Exception {
-				mvc.perform(createGetRequest("/reviews/myReviews")
+				mvc.perform(get(contextPath + "/reviews/myReviews")
 						.param("offset", "0")
 						.param("limit", "3")
 						.param("orderStandard", "DATE")
@@ -508,7 +492,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("상태코드 404를 응답한다.")
 			void It_responds_404() throws Exception {
-				mvc.perform(createGetRequest("/reviews/myReviews")
+				mvc.perform(get(contextPath + "/reviews/myReviews")
 						.param("offset", "0")
 						.param("limit", "3")
 						.param("orderStandard", "DATE")
@@ -528,7 +512,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("상태코드 400을 응답한다.")
 			void It_responds_400() throws Exception {
-				mvc.perform(createGetRequest("/reviews/myReviews")
+				mvc.perform(get(contextPath + "/reviews/myReviews")
 						.param("offset", "0")
 						.param("orderStandard", "DATE")
 						.accept(MediaType.APPLICATION_JSON_UTF8)
@@ -556,7 +540,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("좋아요를 생성하고 상태코드 201과 리뷰를 응답한다.")
 			void It_responds_201_and_review() throws Exception {
-				mvc.perform(createPostRequest("/reviews/" + EXISTS_REVIEW_UUID + "/heart")
+				mvc.perform(post(contextPath + "/reviews/" + EXISTS_REVIEW_UUID + "/heart")
 						.with(csrf())
 					)
 					.andExpect(status().isCreated())
@@ -577,7 +561,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("상태코드 404를 응답한다.")
 			void It_responds_404() throws Exception {
-				mvc.perform(createPostRequest("/reviews/" + NOT_EXISTS_REVIEW_UUID + "/heart")
+				mvc.perform(post(contextPath + "/reviews/" + NOT_EXISTS_REVIEW_UUID + "/heart")
 						.with(csrf())
 					)
 					.andExpect(status().isNotFound());
@@ -597,7 +581,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("상태코드 404를 응답한다.")
 			void It_responds_404() throws Exception {
-				mvc.perform(createPostRequest("/reviews/" + EXISTS_REVIEW_UUID + "/heart")
+				mvc.perform(post(contextPath + "/reviews/" + EXISTS_REVIEW_UUID + "/heart")
 						.with(csrf())
 					)
 					.andExpect(status().isNotFound());
@@ -620,7 +604,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("좋아요를 취소하고 상태코드 204를 응답한다.")
 			void It_responds_204() throws Exception {
-				mvc.perform(createDeleteRequest("/reviews/" + EXISTS_REVIEW_UUID + "/heart")
+				mvc.perform(delete(contextPath + "/reviews/" + EXISTS_REVIEW_UUID + "/heart")
 						.with(csrf())
 					)
 					.andExpect(status().isNoContent())
@@ -641,7 +625,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("상태코드 404를 응답한다.")
 			void It_responds_404() throws Exception {
-				mvc.perform(createDeleteRequest("/reviews/" + NOT_EXISTS_REVIEW_UUID + "/heart")
+				mvc.perform(delete(contextPath + "/reviews/"  + NOT_EXISTS_REVIEW_UUID + "/heart")
 						.with(csrf())
 					)
 					.andExpect(status().isNotFound());
@@ -661,7 +645,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("상태코드 404를 응답한다.")
 			void It_responds_404() throws Exception {
-				mvc.perform(createDeleteRequest("/reviews/" + EXISTS_REVIEW_UUID + "/heart")
+				mvc.perform(delete(contextPath + "/reviews/" + EXISTS_REVIEW_UUID + "/heart")
 						.with(csrf())
 					)
 					.andExpect(status().isNotFound());
@@ -693,7 +677,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("리뷰를 생성하고 상태코드 201과 리뷰를 응답한다.")
 			void It_responds_201_and_review() throws Exception {
-				mvc.perform(createPostRequest("/reviews")
+				mvc.perform(post(contextPath + "/reviews/")
 						.with(csrf())
 						.content(objectMapper.writeValueAsString(validCreateRequest))
 						.accept(MediaType.APPLICATION_JSON_UTF8)
@@ -719,7 +703,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("상태코드 400을 응답한다.")
 			void It_responds_400() throws Exception {
-				mvc.perform(createPostRequest("/reviews")
+				mvc.perform(post(contextPath + "/reviews/")
 						.with(csrf())
 						.content(objectMapper.writeValueAsString(invalidCreateRequest))
 						.accept(MediaType.APPLICATION_JSON_UTF8)
@@ -745,7 +729,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("상태코드 400을 응답한다.")
 			void It_responds_400() throws Exception {
-				mvc.perform(createPostRequest("/reviews")
+				mvc.perform(post(contextPath + "/reviews/")
 						.with(csrf())
 						.content(objectMapper.writeValueAsString(invalidCreateRequest))
 						.accept(MediaType.APPLICATION_JSON_UTF8)
@@ -769,7 +753,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("상태코드 404를 응답한다.")
 			void It_responds_404() throws Exception {
-				mvc.perform(createPostRequest("/reviews")
+				mvc.perform(post(contextPath + "/reviews/")
 						.with(csrf())
 						.content(objectMapper.writeValueAsString(validCreateRequest))
 						.accept(MediaType.APPLICATION_JSON_UTF8)
@@ -805,7 +789,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("리뷰를 수정하고 상태코드 200과 리뷰를 응답한다.")
 			void It_responds_200_and_review() throws Exception {
-				mvc.perform(createPatchRequest("/reviews/" + EXISTS_REVIEW_UUID)
+				mvc.perform(patch(contextPath + "/reviews/" + EXISTS_REVIEW_UUID)
 						.with(csrf())
 						.content(objectMapper.writeValueAsString(validUpdateRequest))
 						.accept(MediaType.APPLICATION_JSON_UTF8)
@@ -830,7 +814,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("상태코드 400을 응답한다.")
 			void It_responds_400() throws Exception {
-				mvc.perform(createPatchRequest("/reviews/" + EXISTS_REVIEW_UUID)
+				mvc.perform(patch(contextPath + "/reviews/" + EXISTS_REVIEW_UUID)
 						.with(csrf())
 						.content(objectMapper.writeValueAsString(invalidUpdateRequest))
 						.accept(MediaType.APPLICATION_JSON_UTF8)
@@ -862,7 +846,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("상태코드 404를 응답한다.")
 			void It_responds_404() throws Exception {
-				mvc.perform(createPatchRequest("/reviews/" + NOT_EXISTS_REVIEW_UUID)
+				mvc.perform(patch(contextPath + "/reviews/" + NOT_EXISTS_REVIEW_UUID)
 						.with(csrf())
 						.content(objectMapper.writeValueAsString(validUpdateRequest))
 						.accept(MediaType.APPLICATION_JSON_UTF8)
@@ -896,7 +880,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("상태코드 404를 응답한다.")
 			void It_responds_404() throws Exception {
-				mvc.perform(createPatchRequest("/reviews/" + EXISTS_REVIEW_UUID)
+				mvc.perform(patch(contextPath + "/reviews/" + EXISTS_REVIEW_UUID)
 						.with(csrf())
 						.content(objectMapper.writeValueAsString(validUpdateRequest))
 						.accept(MediaType.APPLICATION_JSON_UTF8)
@@ -923,7 +907,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("리뷰를 삭제하고 상태코드 204를 응답한다.")
 			void It_responds_204() throws Exception {
-				mvc.perform(createDeleteRequest("/reviews/" + EXISTS_REVIEW_UUID)
+				mvc.perform(delete(contextPath + "/reviews/" + EXISTS_REVIEW_UUID)
 						.with(csrf())
 						.accept(MediaType.APPLICATION_JSON_UTF8)
 						.contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -946,7 +930,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("상태코드 404를 응답한다.")
 			void It_responds_404() throws Exception {
-				mvc.perform(createDeleteRequest("/reviews/" + NOT_EXISTS_REVIEW_UUID)
+				mvc.perform(delete(contextPath + "/reviews/" + NOT_EXISTS_REVIEW_UUID)
 						.with(csrf())
 						.accept(MediaType.APPLICATION_JSON_UTF8)
 						.contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -970,7 +954,7 @@ class ReviewControllerTest {
 			@Test
 			@DisplayName("상태코드 404를 응답한다.")
 			void It_responds_404() throws Exception {
-				mvc.perform(createDeleteRequest("/reviews/" + EXISTS_REVIEW_UUID)
+				mvc.perform(delete(contextPath + "/reviews/" + EXISTS_REVIEW_UUID)
 						.with(csrf())
 						.accept(MediaType.APPLICATION_JSON_UTF8)
 						.contentType(MediaType.APPLICATION_JSON_UTF8)

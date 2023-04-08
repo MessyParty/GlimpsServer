@@ -136,7 +136,7 @@ class ReviewServiceTest {
 						.sillageRatings(4.0)
 						.build();
 
-				Review review = reviewService.createReviewWithImage(reviewCreateRequest, EXISTS_EMAIL);
+				Review review = reviewService.createReview(reviewCreateRequest, EXISTS_EMAIL);
 
 				assertThat(review.getTitle()).isEqualTo(TITLE);
 				assertThat(review.getBody()).isEqualTo(BODY);
@@ -169,7 +169,7 @@ class ReviewServiceTest {
 						.sillageRatings(4.0)
 						.build();
 
-				assertThatThrownBy(() -> reviewService.createReviewWithImage(reviewCreateRequest, NOT_EXISTS_EMAIL))
+				assertThatThrownBy(() -> reviewService.createReview(reviewCreateRequest, NOT_EXISTS_EMAIL))
 					.isInstanceOf(EntityNotFoundException.class);
 			}
 		}
@@ -197,7 +197,7 @@ class ReviewServiceTest {
 						.sillageRatings(4.0)
 						.build();
 
-				assertThatThrownBy(() -> reviewService.createReviewWithImage(reviewCreateRequest, EXISTS_EMAIL))
+				assertThatThrownBy(() -> reviewService.createReview(reviewCreateRequest, EXISTS_EMAIL))
 					.isInstanceOf(EntityNotFoundException.class);
 			}
 		}
