@@ -65,7 +65,7 @@ class ReviewResponseTest {
 		assertThat(reviewResponse.getLongevityRatings()).isEqualTo(4.5);
 		assertThat(reviewResponse.getSillageRatings()).isEqualTo(4.0);
 		assertThat(reviewResponse.getPerfumeName()).isEqualTo(TEST_PERFUME_NAME);
-		assertThat(reviewResponse.getPerfumeBrand()).isEqualTo(TEST_BRAND);
+		assertThat(reviewResponse.getPerfumeBrand()).isEqualTo(TEST_BRAND.getBrandName());
 		assertThat(reviewResponse.getNickname()).isEqualTo(TEST_NICKNAME);
 	}
 
