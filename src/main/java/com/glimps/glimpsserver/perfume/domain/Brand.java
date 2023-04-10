@@ -25,12 +25,16 @@ public class Brand {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "brand_name")
-	private String brandName;
+	@Column(name = "brand_name_kor")
+	private String brandNameKor;
 
-	public static Brand createBrand(String brandName) {
+	@Column(name = "brand_name_eng")
+	private String brandNameEng;
+
+	public static Brand createBrand(String brandName, String brandNameKor) {
 		return Brand.builder()
-			.brandName(brandName)
+			.brandNameEng(brandName)
+			.brandNameKor(brandNameKor)
 			.build();
 	}
 }

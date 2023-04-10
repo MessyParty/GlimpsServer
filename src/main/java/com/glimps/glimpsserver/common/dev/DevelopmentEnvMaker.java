@@ -40,8 +40,8 @@ public class DevelopmentEnvMaker {
 
 		userRepository.saveAll(List.of(user1, user2));
 
-		Brand brand = Brand.createBrand("Channel");
-		Brand ck = Brand.createBrand("CK");
+		Brand brand = Brand.createBrand("Channel", "샤넬");
+		Brand ck = Brand.createBrand("CK","캘빈클라인");
 		brandRepository.saveAll(List.of(brand, ck));
 
 		Perfume perfume1 = Perfume.createPerfume(brand, "NO.5");
@@ -82,8 +82,7 @@ public class DevelopmentEnvMaker {
 			.email(email)
 			.userType(UserType.KAKAO)
 			.build();
-		User user = User.createUser(userVo, role);
-		return user;
+		return User.createUser(userVo, role);
 	}
 
 }
