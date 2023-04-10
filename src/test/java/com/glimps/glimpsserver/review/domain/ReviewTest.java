@@ -16,7 +16,10 @@ class ReviewTest {
 	private static final double OVERALL_RATING = 5.0;
 	private static final double LONGEVITY_RATING = 4.5;
 	private static final double SILLAGE_RATING = 4.0;
-	private static final Brand brand = Brand.builder().brandName("chanel").build();
+	private static final Brand TEST_BRAND = Brand.builder()
+			.brandNameEng("chanel")
+			.brandNameKor("샤넬")
+			.build();
 
 	private static final User user = User.builder()
 		.id(5L)
@@ -26,7 +29,7 @@ class ReviewTest {
 		.role(RoleType.USER)
 		.build();
 
-	private static final Perfume perfume = Perfume.createPerfume(brand, "No.5");
+	private static final Perfume perfume = Perfume.createPerfume(TEST_BRAND, "No.5");
 
 	@Test
 	void createReview() {
@@ -44,7 +47,7 @@ class ReviewTest {
 		assertThat(review.getBody()).isEqualTo(BODY);
 		assertThat(review.getHeartsCnt()).isZero();
 		assertThat(review.getPerfume().getPerfumeName()).isEqualTo("No.5");
-		assertThat(review.getPerfume().getBrand()).isEqualTo(brand);
+		assertThat(review.getPerfume().getBrand()).isEqualTo(TEST_BRAND);
 		assertThat(review.getOverallRatings()).isEqualTo(OVERALL_RATING);
 		assertThat(review.getSillageRatings()).isEqualTo(SILLAGE_RATING);
 		assertThat(review.getLongevityRatings()).isEqualTo(LONGEVITY_RATING);

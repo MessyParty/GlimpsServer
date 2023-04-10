@@ -54,7 +54,10 @@ class ReviewServiceTest {
 	private static final UUID EXISTS_REVIEW_UUID = UUID.randomUUID();
 	private static final UUID NOT_EXISTS_REVIEW_UUID = UUID.randomUUID();
 	private static final UUID NOT_EXISTS_PERFUME_UUID = UUID.randomUUID();
-	private static final Brand TEST_BRAND = Brand.builder().brandName("chanel").build();
+	private static final Brand TEST_BRAND = Brand.builder()
+			.brandNameEng("chanel")
+			.brandNameKor("샤넬")
+			.build();
 	private static final Perfume EXISTS_PERFUME = Perfume.builder()
 		.id(EXISTS_PERFUME_ID)
 		.uuid(EXISTS_PERFUME_UUID)
@@ -136,7 +139,7 @@ class ReviewServiceTest {
 						.sillageRatings(4.0)
 						.build();
 
-				Review review = reviewService.createReviewWithImage(reviewCreateRequest, EXISTS_EMAIL);
+				Review review = reviewService.createReview(reviewCreateRequest, EXISTS_EMAIL);
 
 				assertThat(review.getTitle()).isEqualTo(TITLE);
 				assertThat(review.getBody()).isEqualTo(BODY);
@@ -169,7 +172,7 @@ class ReviewServiceTest {
 						.sillageRatings(4.0)
 						.build();
 
-				assertThatThrownBy(() -> reviewService.createReviewWithImage(reviewCreateRequest, NOT_EXISTS_EMAIL))
+				assertThatThrownBy(() -> reviewService.createReview(reviewCreateRequest, NOT_EXISTS_EMAIL))
 					.isInstanceOf(EntityNotFoundException.class);
 			}
 		}
@@ -197,7 +200,7 @@ class ReviewServiceTest {
 						.sillageRatings(4.0)
 						.build();
 
-				assertThatThrownBy(() -> reviewService.createReviewWithImage(reviewCreateRequest, EXISTS_EMAIL))
+				assertThatThrownBy(() -> reviewService.createReview(reviewCreateRequest, EXISTS_EMAIL))
 					.isInstanceOf(EntityNotFoundException.class);
 			}
 		}

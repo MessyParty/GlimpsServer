@@ -25,7 +25,8 @@ public class ReviewResponse {
 	@Builder.Default
 	private List<String> photoUrls = Lists.newArrayList();
 	private String perfumeName;
-	private String perfumeBrand;
+	private String perfumeBrandKor;
+	private String perfumeBrandEng;
 	private int heartCnt;
 	private double overallRatings;
 	private double longevityRatings;
@@ -44,7 +45,8 @@ public class ReviewResponse {
 				.collect(Collectors.toList()))
 			.perfumeName(review.getPerfume().getPerfumeName())
 			.heartCnt(review.getHeartsCnt())
-			.perfumeBrand(review.getPerfume().getBrand().getBrandName())
+			.perfumeBrandKor(review.getPerfume().getBrand().getBrandNameKor())
+			.perfumeBrandEng(review.getPerfume().getBrand().getBrandNameEng())
 			.overallRatings(review.getOverallRatings())
 			.longevityRatings(review.getLongevityRatings())
 			.sillageRatings(review.getSillageRatings())

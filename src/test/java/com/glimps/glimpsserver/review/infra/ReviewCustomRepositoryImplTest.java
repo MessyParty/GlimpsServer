@@ -36,7 +36,10 @@ class ReviewCustomRepositoryImplTest {
 	private static final UUID EXISTS_REVIEW_UUID = Generators.timeBasedGenerator().generate();
 	private static final UUID NOT_EXISTS_REVIEW_UUID = UUID.randomUUID();
 	private static final UUID NOT_EXISTS_PERFUME_UUID = UUID.randomUUID();
-	private static final Brand TEST_BRAND = Brand.builder().brandName("chanel").build();
+	private static final Brand TEST_BRAND = Brand.builder()
+			.brandNameEng("chanel")
+			.brandNameKor("샤넬")
+			.build();
 	private static final Perfume EXISTS_PERFUME = Perfume.builder()
 		.uuid(Generators.timeBasedGenerator().generate())
 		.perfumeName("향수 이름")

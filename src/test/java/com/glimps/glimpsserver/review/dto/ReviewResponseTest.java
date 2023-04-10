@@ -12,7 +12,10 @@ import com.glimps.glimpsserver.user.domain.RoleType;
 import com.glimps.glimpsserver.user.domain.User;
 
 class ReviewResponseTest {
-	private static final Brand TEST_BRAND = Brand.builder().brandName("chanel").build();
+	private static final Brand TEST_BRAND = Brand.builder()
+			.brandNameEng("chanel")
+			.brandNameKor("샤넬")
+			.build();
 	private static final String TEST_PERFUME_NAME = "testPerfumeName";
 	private static final String TEST_NICKNAME = "testNickname";
 	private static final String TEST_EMAIL = "test@email.com";
@@ -65,7 +68,7 @@ class ReviewResponseTest {
 		assertThat(reviewResponse.getLongevityRatings()).isEqualTo(4.5);
 		assertThat(reviewResponse.getSillageRatings()).isEqualTo(4.0);
 		assertThat(reviewResponse.getPerfumeName()).isEqualTo(TEST_PERFUME_NAME);
-		assertThat(reviewResponse.getPerfumeBrand()).isEqualTo(TEST_BRAND);
+		assertThat(reviewResponse.getPerfumeBrandEng()).isEqualTo(TEST_BRAND.getBrandNameEng());
 		assertThat(reviewResponse.getNickname()).isEqualTo(TEST_NICKNAME);
 	}
 
