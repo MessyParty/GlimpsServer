@@ -73,7 +73,7 @@ class ReviewControllerTest {
 	private static final Perfume EXISTS_PERFUME = Perfume.builder()
 		.uuid(Generators.timeBasedGenerator().generate())
 		.perfumeName("향수 이름")
-		.brand(Brand.builder().brandName("향수 브랜드").build())
+		.brand(Brand.builder().brandNameKor("향수 브랜드").build())
 		.build();
 
 	private static final User EXISTS_USER = User.builder()
