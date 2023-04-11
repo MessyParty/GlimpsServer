@@ -4,16 +4,19 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.glimps.glimpsserver.common.error.CustomException;
 import com.glimps.glimpsserver.common.error.EntityNotFoundException;
 import com.glimps.glimpsserver.common.error.ErrorCode;
 import com.glimps.glimpsserver.perfume.domain.Note;
 import com.glimps.glimpsserver.perfume.domain.Perfume;
 import com.glimps.glimpsserver.perfume.domain.PerfumeNote;
 import com.glimps.glimpsserver.perfume.dto.PerfumeResponse;
-import com.glimps.glimpsserver.perfume.infra.PerfumeNoteRepository;
+import com.glimps.glimpsserver.perfume.infra.PerfumeCustomRepository;
 import com.glimps.glimpsserver.perfume.infra.PerfumeRepository;
 import com.glimps.glimpsserver.review.dto.ReviewCreateRequest;
 import com.glimps.glimpsserver.review.dto.ReviewUpdateRequest;
@@ -23,11 +26,11 @@ import com.glimps.glimpsserver.review.vo.ReviewRatings;
 @Transactional(readOnly = true)
 public class PerfumeService {
 	private final PerfumeRepository perfumeRepository;
-	private final PerfumeNoteRepository perfumeNoteRepository;
+	private final PerfumeCustomRepository perfumeCustomRepository;
 
-	public PerfumeService(PerfumeRepository perfumeRepository, PerfumeNoteRepository perfumeNoteRepository) {
+	public PerfumeService(PerfumeRepository perfumeRepository, PerfumeCustomRepository perfumeCustomRepository) {
 		this.perfumeRepository = perfumeRepository;
-		this.perfumeNoteRepository = perfumeNoteRepository;
+		this.perfumeCustomRepository = perfumeCustomRepository;
 	}
 
 	@Transactional
@@ -72,5 +75,23 @@ public class PerfumeService {
 		return perfumes.stream().map(PerfumeResponse::of).collect(Collectors.toList());
 	}
 
+	public Page<PerfumeResponse> getPerfumeByBrand(String brandName, Pageable pageable) {
+		// Page<Perfume> page = perfumeCustomRepository.searchByBrand(brandName, pageable);
+		return null;
+	}
+
+	public List<PerfumeResponse> getRandomPerfume(Integer amount) {
+		List<Perfume> list = perfumeCustomRepository.getRandom(amount);
+		return list.stream().map(PerfumeResponse::of).collect(Collectors.toList());
+	}
+
+	public List<PerfumeResponse> getPerfumeByOverall(Integer amount) {
+		if(amount > 10)
+			throw new CustomException(ErrorCode.PERFUME_TOO_MANY_AMOUNT);
+		return perfumeCustomRepository.findOrderByOverall(amount)
+			.stream()
+			.map(PerfumeResponse::of)
+			.collect(Collectors.toList());
+	}
 
 }

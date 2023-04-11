@@ -52,12 +52,12 @@ public class DevelopmentEnvMaker {
 		brandRepository.saveAll(List.of(brand, ck));
 
 		Perfume no5 = Perfume.createPerfume(brand, "NO.5");
+		no5.updateRatings(5, 4, 3);
 		perfumeRepository.save(no5);
 
-		Perfume One = Perfume.createPerfume(ck, "One");
-		perfumeRepository.save(One);
-
-		StringBuilder stringBuilder = new StringBuilder();
+		Perfume one = Perfume.createPerfume(ck, "ONE");
+		one.updateRatings(4.5, 3, 1);
+		perfumeRepository.save(one);
 
 		Note suede = Note.createNote(new CreateNoteRequest("SUEDE", "스웨이드"));
 		Note white = Note.createNote(new CreateNoteRequest("WHITE TEA", "화이트 티"));
@@ -68,8 +68,8 @@ public class DevelopmentEnvMaker {
 		PerfumeNote no5Suede = PerfumeNote.mapNoteToPerfume(no5, suede);
 		PerfumeNote no5White = PerfumeNote.mapNoteToPerfume(no5, white);
 
-		PerfumeNote oneWhite = PerfumeNote.mapNoteToPerfume(One, white);
-		PerfumeNote oneFig = PerfumeNote.mapNoteToPerfume(One, fig);
+		PerfumeNote oneWhite = PerfumeNote.mapNoteToPerfume(one, white);
+		PerfumeNote oneFig = PerfumeNote.mapNoteToPerfume(one, fig);
 
 		perfumeNoteRepository.saveAll(List.of(no5White, no5Suede, oneWhite, oneFig));
 
@@ -85,7 +85,7 @@ public class DevelopmentEnvMaker {
 
 		ReviewCreateRequest ckRequest =
 			ReviewCreateRequest.builder()
-				.perfumeUuid(One.getUuid())
+				.perfumeUuid(one.getUuid())
 				.title("ck 향수 정말 좋아요")
 				.body("ck 향수 본문")
 				.overallRatings(5)
@@ -94,8 +94,10 @@ public class DevelopmentEnvMaker {
 				.build();
 
 		Review review1 = Review.createReview(channelRequest, user1, no5);
-		Review review2 = Review.createReview(ckRequest, user2, One);
+		Review review2 = Review.createReview(ckRequest, user2, one);
+
 		reviewRepository.saveAll(List.of(review1, review2));
+
 	}
 
 	private User getUser(String name, String email, RoleType role) {

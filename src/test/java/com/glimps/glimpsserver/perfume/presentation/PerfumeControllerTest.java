@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -69,13 +70,14 @@ class PerfumeControllerTest {
 
 	@Test
 	@DisplayName("유효한 UUID로 접근 시 향수 정보를 반환한다.")
-	void given_ValidUUID_When_FindPerfume_Then_Success() throws Exception {
+	void given_ValidUUID_When_GetPerfume_Then_Success() throws Exception {
 		//given
 		given(perfumeService.getPerfumeWithNotesAndBrand(PERFUME_UUID)).willReturn(PERFUME_DTO);
 
 		//when
 		mockMvc.perform(get("/perfumes/" + PERFUME_UUID))
 			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
 			.andExpect(jsonPath("$.uuid").value(PERFUME_UUID.toString()))
 			.andExpect(jsonPath("$.brandId").value(BRAND.getId()))
 			.andExpect(jsonPath("$.brandName").value(BRAND.getBrandName()))
@@ -91,7 +93,7 @@ class PerfumeControllerTest {
 
 	@Test
 	@DisplayName("유효하지 않은 UUID로 접근 시 404 에러를 반환한다.")
-	void given_InvalidUUID_When_FindPerfume_Then_404Fail() throws Exception {
+	void given_InvalidUUID_When_GetPerfume_Then_404Fail() throws Exception {
 		//given
 		given(perfumeService.getPerfumeWithNotesAndBrand(NOT_EXIST_UUID)).willThrow(new EntityNotFoundException(
 			ErrorCode.PERFUME_NOT_FOUND, NOT_EXIST_UUID));
@@ -99,8 +101,31 @@ class PerfumeControllerTest {
 		//when
 		mockMvc.perform(get("/perfumes/" + NOT_EXIST_UUID))
 			.andExpect(status().isNotFound())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
 			.andExpect(jsonPath("$.errorCode").exists())
 			.andExpect(jsonPath("$.errorMessage").exists())
+			.andDo(print());
+	}
+
+	@Test
+	@DisplayName("전달된 개수만큼의 향수를 조회한다.")
+	void given_Amount_When_GetPerfume_Then_Success() throws Exception {
+		//given
+		given(perfumeService.getPerfumeByOverall(3)).willReturn(List.of(PERFUME_DTO, PERFUME_DTO, PERFUME_DTO));
+
+		//when
+		mockMvc.perform(get("/perfumes/best").param("amount", String.valueOf(3)))
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+			.andExpect(jsonPath("$.length()").value(3))
+			.andExpect(jsonPath("$[0].uuid").value(PERFUME_UUID.toString()))
+			.andExpect(jsonPath("$[0].brandId").value(BRAND.getId()))
+			.andExpect(jsonPath("$[0].brandName").value(BRAND.getBrandName()))
+			.andExpect(jsonPath("$[0].perfumeName").value(PERFUME_NAME))
+			.andExpect(jsonPath("$[0].overallRatings").value(OVERALL))
+			.andExpect(jsonPath("$[0].longevityRatings").value(LONGEVITY))
+			.andExpect(jsonPath("$[0].sillageRatings").value(SILLAGE))
+			.andExpect(jsonPath("$[0].reviewCnt").value(REVIEW_CNT))
 			.andDo(print());
 	}
 

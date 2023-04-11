@@ -27,6 +27,7 @@ public enum ErrorCode {
 
 	// P-XXX - Error about Perfume
 	PERFUME_NOT_FOUND(HttpStatus.NOT_FOUND, "P-001", "향수를 찾을 수 없습니다."),
+	PERFUME_TOO_MANY_AMOUNT(HttpStatus.NOT_FOUND, "P-002", "조회하려는 향수의 숫자가 너무 많습니다."),
 
 	// R-XXX - Error about Review
 	REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "R-001", "[ERROR] 리뷰를 찾을 수 없습니다."),

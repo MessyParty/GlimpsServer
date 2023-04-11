@@ -10,7 +10,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import com.fasterxml.uuid.Generators;
 import com.glimps.glimpsserver.perfume.domain.Brand;
@@ -36,11 +35,6 @@ class PerfumeRepositoryTest {
 	@Autowired
 	private NoteRepository noteRepository;
 
-	@Autowired
-	private PerfumeNoteRepository perfumeNoteRepository;
-
-	@Autowired
-	private TestEntityManager em;
 
 	@BeforeEach
 	void setUp() {
@@ -75,7 +69,7 @@ class PerfumeRepositoryTest {
 
 	@Test
 	@DisplayName("유효한 UUID로 조회 시 향수 정보 반환")
-	void give_ValidUUID_When_FindPerfume_Then_Success() {
+	void given_ValidUUID_When_FindPerfume_Then_Success() {
 		//when
 		Optional<Perfume> OptionalPerfume = perfumeRepository.findPerfumeWithEntities(PERFUME_UUID);
 
@@ -98,7 +92,7 @@ class PerfumeRepositoryTest {
 
 	@Test
 	@DisplayName("유효하지 않은 UUID로 조회시 null 반환")
-	void give_InvalidUUID_When_FindPerfume_Then_Success() {
+	void given_InvalidUUID_When_FindPerfume_Then_Success() {
 		//when
 		Optional<Perfume> OptionalPerfume = perfumeRepository.findPerfumeWithEntities(NOT_EXIST_UUID);
 
