@@ -1,6 +1,6 @@
 package com.glimps.glimpsserver.review.infra;
 
-import static com.glimps.glimpsserver.perfume.domain.QBrand.brand;
+
 import static com.glimps.glimpsserver.perfume.domain.QPerfume.perfume;
 import static com.glimps.glimpsserver.review.domain.QReview.review;
 import static com.glimps.glimpsserver.review.domain.QReviewPhoto.reviewPhoto;

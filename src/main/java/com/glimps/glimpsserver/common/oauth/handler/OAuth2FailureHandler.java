@@ -28,7 +28,7 @@ public class OAuth2FailureHandler implements AuthenticationFailureHandler {
 
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-		AuthenticationException exception) throws IOException, ServletException {
+		AuthenticationException exception) throws IOException {
 		response.setStatus(401);
 
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
