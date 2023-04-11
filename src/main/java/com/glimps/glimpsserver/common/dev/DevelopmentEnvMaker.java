@@ -63,12 +63,12 @@ public class DevelopmentEnvMaker {
 			.build();
 
 		Perfume no5 = Perfume.createPerfume(brand, "NO.5");
-		no5.updateRatings(5, 4, 3);
+		no5.updateRatings(5, 4.5, 4, 3);
 		no5.addPhoto(photo1);
 		perfumeRepository.save(no5);
 
 		Perfume one = Perfume.createPerfume(ck, "ONE");
-		one.updateRatings(4.5, 3, 1);
+		one.updateRatings(4.5,4.2, 3, 1);
 		one.addPhoto(photo2);
 		perfumeRepository.save(one);
 

@@ -29,6 +29,7 @@ public class PerfumeResponse {
 	private String perfumeName;
 
 	private double overallRatings;
+	private double scentRatings;
 	private double longevityRatings;
 	private double sillageRatings;
 	private int reviewCnt;
@@ -44,6 +45,7 @@ public class PerfumeResponse {
 			.brandNameKor(perfume.getBrand().getBrandNameKor())
 			.perfumeName(perfume.getPerfumeName())
 			.overallRatings(perfume.getOverallRatings())
+			.scentRatings(perfume.getScentRatings())
 			.longevityRatings(perfume.getLongevityRatings())
 			.sillageRatings(perfume.getSillageRatings())
 			.reviewCnt(perfume.getReviewCnt())
@@ -60,6 +62,7 @@ public class PerfumeResponse {
 			.brandNameKor(perfume.getBrand().getBrandNameKor())
 			.perfumeName(perfume.getPerfumeName())
 			.overallRatings(perfume.getOverallRatings())
+			.scentRatings(perfume.getScentRatings())
 			.longevityRatings(perfume.getLongevityRatings())
 			.sillageRatings(perfume.getSillageRatings())
 			.reviewCnt(perfume.getReviewCnt())
@@ -75,6 +78,7 @@ public class PerfumeResponse {
 		this.brandNameKor = brand.getBrandNameKor();
 		this.perfumeName = perfume.getPerfumeName();
 		this.overallRatings = perfume.getOverallRatings();
+		this.scentRatings = perfume.getScentRatings();
 		this.longevityRatings = perfume.getLongevityRatings();
 		this.sillageRatings = perfume.getSillageRatings();
 		this.reviewCnt = perfume.getReviewCnt();

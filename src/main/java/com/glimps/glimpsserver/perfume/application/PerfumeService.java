@@ -37,14 +37,14 @@ public class PerfumeService {
 
 	@Transactional
 	public void updateRatings(Perfume perfume, ReviewCreateRequest reviewCreateRequest) {
-		perfume.updateRatings(reviewCreateRequest.getOverallRatings(), reviewCreateRequest.getLongevityRatings(),
-			reviewCreateRequest.getSillageRatings());
+		perfume.updateRatings(reviewCreateRequest.getOverallRatings(), reviewCreateRequest.getScentRatings(),
+			reviewCreateRequest.getLongevityRatings(), reviewCreateRequest.getSillageRatings());
 	}
 
 	@Transactional
 	public void updateRatings(Perfume perfume, ReviewUpdateRequest reviewUpdateRequest, ReviewRatings reviewRatings) {
-		perfume.updateRatings(reviewUpdateRequest.getOverallRatings(), reviewUpdateRequest.getLongevityRatings(),
-			reviewUpdateRequest.getSillageRatings(), reviewRatings);
+		perfume.updateRatings(reviewUpdateRequest.getOverallRatings(), reviewRatings.getScentRatings(),
+			reviewUpdateRequest.getLongevityRatings(), reviewUpdateRequest.getSillageRatings(), reviewRatings);
 	}
 
 	@Transactional
@@ -79,9 +79,7 @@ public class PerfumeService {
 
 	public Slice<PerfumeResponse> getPerfumeByBrand(String brandName, Pageable pageable) {
 		Slice<Perfume> slice = perfumeCustomRepository.searchByBrand(brandName, pageable);
-		List<PerfumeResponse> content = slice.stream()
-			.map(PerfumeResponse::of)
-			.collect(Collectors.toList());
+		List<PerfumeResponse> content = slice.stream().map(PerfumeResponse::of).collect(Collectors.toList());
 		return new SliceImpl<>(content, slice.getPageable(), slice.hasNext());
 	}
 
