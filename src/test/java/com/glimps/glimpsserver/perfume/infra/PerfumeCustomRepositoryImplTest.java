@@ -111,6 +111,12 @@ class PerfumeCustomRepositoryImplTest {
 		assertThat(twoPerfume.get(0)).isNotEqualTo(twoPerfume.get(1));
 
 		assertThat(onePerfume).hasSize(1);
+		assertThat(onePerfume.get(0)).isNotNull();
+		Perfume perfume = onePerfume.get(0);
+		assertThat(perfume.getPerfumeName()).isNotNull();
+		assertThat(perfume.getUuid()).isNotNull();
+		assertThat(perfume.getBrand()).isNotNull();
+		assertThat(perfume.getId()).isNotNull();
 	}
 
 }
