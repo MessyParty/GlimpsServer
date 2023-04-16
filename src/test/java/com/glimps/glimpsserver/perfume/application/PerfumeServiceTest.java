@@ -145,9 +145,40 @@ class PerfumeServiceTest {
 		Integer invalidAmount = 11;
 
 		//then
-		assertThatExceptionOfType(CustomException.class).isThrownBy(() -> {
-			perfumeService.getPerfumeByOverall(invalidAmount);
-		}).withMessage(ErrorCode.PERFUME_TOO_MANY_AMOUNT.getMessage());
+		assertThatExceptionOfType(CustomException.class)
+			.isThrownBy(() -> perfumeService.getPerfumeByOverall(invalidAmount))
+			.withMessage(ErrorCode.PERFUME_TOO_MANY_AMOUNT.getMessage());
+		//when
+
+	}
+
+	@Test
+	@DisplayName("전달된 개수만큼의 향수를 랜덤 조회하면, 향수 정보를 Dto로 변환한다.")
+	void given_ValidAmount_When_findRandom() {
+		//given
+		given(perfumeCustomRepository.findRandom(2)).willReturn(List.of(ONE, NO5));
+
+		//when
+		List<PerfumeResponse> result = perfumeService.getRandomPerfume(2);
+
+		//then
+		assertThat(result).hasSize(2);
+		assertThat(result.get(0)).isNotNull();
+		assertThat(result.get(1)).isNotNull();
+		assertThat(List.of(result.get(0).getUuid(), result.get(1).getUuid()))
+			.containsAll(List.of(PERFUME1_UUID, PERFUME2_UUID));
+	}
+
+	@Test
+	@DisplayName("랜덤 조회는 10개를 초과해 조회할 시 예외를 던진다.")
+	void given_InValidAmount_When_findRandom() {
+		//given
+		Integer invalidAmount = 11;
+
+		//then
+		assertThatExceptionOfType(CustomException.class)
+			.isThrownBy(() -> perfumeService.getPerfumeByOverall(invalidAmount))
+			.withMessage(ErrorCode.PERFUME_TOO_MANY_AMOUNT.getMessage());
 		//when
 
 	}

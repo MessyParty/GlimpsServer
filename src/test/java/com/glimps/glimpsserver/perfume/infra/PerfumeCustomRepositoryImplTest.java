@@ -5,8 +5,6 @@ import static org.assertj.core.api.Assertions.*;
 import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.EntityManager;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -93,9 +91,26 @@ class PerfumeCustomRepositoryImplTest {
 
 		//then
 		assertThat(twoPerfume).hasSize(2);
-		assertThat(onePerfume).hasSize(1);
+		assertThat(twoPerfume.get(0)).isNotEqualTo(twoPerfume.get(1));
 		assertThat(twoPerfume.get(0).getOverallRatings())
 			.isGreaterThanOrEqualTo(twoPerfume.get(1).getOverallRatings());
+
+		assertThat(onePerfume).hasSize(1);
+
+	}
+
+	@Test
+	@DisplayName("불러올 향수의 개수 N을 전달하면 N개의 향수를 랜덤으로 불러온다.")
+	void given_Amount_When_RandomPerfume_Then_Success() {
+		//when
+		List<Perfume> twoPerfume = perfumeCustomRepository.findRandom(2);
+		List<Perfume> onePerfume = perfumeCustomRepository.findRandom(1);
+
+		//then
+		assertThat(twoPerfume).hasSize(2);
+		assertThat(twoPerfume.get(0)).isNotEqualTo(twoPerfume.get(1));
+
+		assertThat(onePerfume).hasSize(1);
 	}
 
 }

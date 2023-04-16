@@ -76,13 +76,17 @@ public class PerfumeService {
 	}
 
 	public Page<PerfumeResponse> getPerfumeByBrand(String brandName, Pageable pageable) {
-		// Page<Perfume> page = perfumeCustomRepository.searchByBrand(brandName, pageable);
+		perfumeCustomRepository.searchByBrand(brandName, pageable);
 		return null;
 	}
 
 	public List<PerfumeResponse> getRandomPerfume(Integer amount) {
-		List<Perfume> list = perfumeCustomRepository.getRandom(amount);
-		return list.stream().map(PerfumeResponse::of).collect(Collectors.toList());
+		if(amount > 10)
+			throw new CustomException(ErrorCode.PERFUME_TOO_MANY_AMOUNT);
+		return perfumeCustomRepository.findRandom(amount)
+			.stream()
+			.map(PerfumeResponse::of)
+			.collect(Collectors.toList());
 	}
 
 	public List<PerfumeResponse> getPerfumeByOverall(Integer amount) {
