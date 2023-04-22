@@ -14,6 +14,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 
 import com.fasterxml.uuid.Generators;
 import com.glimps.glimpsserver.common.error.CustomException;
@@ -182,5 +186,24 @@ class PerfumeServiceTest {
 		//when
 
 	}
+
+	@Test
+	@DisplayName("유효한 브랜드로 조회시 올바른 결과를 반환한다.")
+	void given_ValidBrand_When_SearchByBrand() {
+		//given
+		Pageable pageable = PageRequest.of(0, 3);
+		given(perfumeCustomRepository.searchByBrand(BRAND_NAME1, pageable))
+			.willReturn(new SliceImpl<>(List.of(NO5, NO5, NO5), pageable, true));
+
+		//when
+		Slice<PerfumeResponse> result = perfumeService.getPerfumeByBrand(BRAND_NAME1, pageable);
+
+		//then
+		assertThat(result.getContent()).hasSize(3);
+		assertThat(result.hasNext()).isTrue();
+		assertThat(result.getNumberOfElements()).isEqualTo(3);
+
+	}
+
 
 }

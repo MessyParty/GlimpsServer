@@ -2,6 +2,7 @@ package com.glimps.glimpsserver.perfume.infra;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -11,6 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 import com.fasterxml.uuid.Generators;
 import com.glimps.glimpsserver.config.EntityManagerConfig;
@@ -37,6 +41,14 @@ class PerfumeCustomRepositoryImplTest {
 	void setUp() {
 		Brand CK = Brand.builder().brandName("CK").build();
 		Brand Chanel = Brand.builder().brandName("Chanel").build();
+		Brand Dummy = Brand.builder().brandName("Dummy").build();
+
+		List<Perfume> dummies = new ArrayList<>();
+		for (int i = 0; i < 10; i++) {
+			dummies.add(makeDummy(i + 1, Dummy));
+		}
+		brandRepository.save(Dummy);
+		perfumeRepository.saveAll(dummies);
 
 		Perfume no5 = Perfume.builder()
 			.uuid(NO5_UUID)
@@ -82,6 +94,18 @@ class PerfumeCustomRepositoryImplTest {
 
 	}
 
+	private static Perfume makeDummy(int index, Brand brand) {
+		return Perfume.builder()
+			.uuid(Generators.timeBasedGenerator().generate())
+			.brand(brand)
+			.perfumeName("dummy " + index)
+			.overallRatings(3.4)
+			.longevityRatings(3.4)
+			.sillageRatings(3.4)
+			.reviewCnt(420)
+			.build();
+	}
+
 	@Test
 	@DisplayName("불러올 향수의 개수 N을 전달하면 N개의 향수를 총점순으로 불러온다.")
 	void given_Amount_When_BestPerfume_Then_OrderByOverall() {
@@ -118,5 +142,51 @@ class PerfumeCustomRepositoryImplTest {
 		assertThat(perfume.getBrand()).isNotNull();
 		assertThat(perfume.getId()).isNotNull();
 	}
+
+	@Test
+	@DisplayName("존재하는 브랜드가 전달되면 Slice객체를 반환한다.")
+	void given_ValidBrand_When_findWithBrand_Then_Success() {
+		//given
+		String brandName = "Dummy";
+		int page = 0, size = 5;
+		Pageable pageable0 = PageRequest.of(page, size);
+		Pageable pageable1 = PageRequest.of(page + 1, size);
+
+		//when
+		Slice<Perfume> slice0 = perfumeCustomRepository.searchByBrand(brandName, pageable0);
+		Slice<Perfume> slice1 = perfumeCustomRepository.searchByBrand(brandName, pageable1);
+
+		//then
+		assertThat(slice0.hasNext()).isTrue();
+		assertThat(slice0.getContent()).hasSize(size);
+
+		assertThat(slice1.hasNext()).isFalse();
+		assertThat(slice1.getContent()).hasSize(size);
+	}
+
+
+	@Test
+	@DisplayName("존재하지 않는 브랜드가 전달되면 빈 Slice객체를 반환한다.")
+	void given_InValidBrand_When_findWithBrand_Then_NotFound() {
+		//given
+		String brandName = "Kanye";
+		int page = 0, size = 5;
+		Pageable pageable0 = PageRequest.of(page, size);
+		Pageable pageable1 = PageRequest.of(page + 1, size);
+
+		//when
+		Slice<Perfume> slice0 = perfumeCustomRepository.searchByBrand(brandName, pageable0);
+		Slice<Perfume> slice1 = perfumeCustomRepository.searchByBrand(brandName, pageable1);
+
+		//then
+		assertThat(slice0.hasNext()).isFalse();
+		assertThat(slice0.getNumberOfElements()).isZero();
+		assertThat(slice0.getContent()).isEmpty();
+
+		assertThat(slice1.hasNext()).isFalse();
+		assertThat(slice0.getNumberOfElements()).isZero();
+		assertThat(slice1.getContent()).isEmpty();
+	}
+
 
 }

@@ -28,14 +28,22 @@ public class PerfumeCustomRepositoryImpl implements PerfumeCustomRepository {
 
 	@Override
 	public Slice<Perfume> searchByBrand(String brandName, Pageable pageable) {
-		List<Perfume> fetch = queryFactory.selectFrom(perfume)
+		List<Perfume> content = queryFactory.selectFrom(perfume)
 			.leftJoin(perfume.brand, brand)
+			.fetchJoin()
 			.where(brand.brandName.eq(brandName))
 			.offset(pageable.getOffset())
 			.limit((long) pageable.getPageSize() + 1)
 			.fetch();
 
-		return new SliceImpl<>(fetch, pageable, true);
+		boolean hasNext = false;
+
+		if(content.size() > pageable.getPageSize()) {
+			content.remove(pageable.getPageSize());
+			hasNext = true;
+		}
+
+		return new SliceImpl<>(content, pageable, hasNext);
 	}
 
 	@Override

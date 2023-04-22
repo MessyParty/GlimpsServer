@@ -4,8 +4,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,13 +76,16 @@ public class PerfumeService {
 		return perfumes.stream().map(PerfumeResponse::of).collect(Collectors.toList());
 	}
 
-	public Page<PerfumeResponse> getPerfumeByBrand(String brandName, Pageable pageable) {
-		perfumeCustomRepository.searchByBrand(brandName, pageable);
-		return null;
+	public Slice<PerfumeResponse> getPerfumeByBrand(String brandName, Pageable pageable) {
+		Slice<Perfume> perfumes = perfumeCustomRepository.searchByBrand(brandName, pageable);
+		List<PerfumeResponse> perfumeResponses = perfumes.stream()
+			.map(PerfumeResponse::of)
+			.collect(Collectors.toList());
+		return new SliceImpl<>(perfumeResponses, perfumes.getPageable(), perfumes.hasNext());
 	}
 
 	public List<PerfumeResponse> getRandomPerfume(Integer amount) {
-		if(amount > 10)
+		if (amount > 10)
 			throw new CustomException(ErrorCode.PERFUME_TOO_MANY_AMOUNT);
 		return perfumeCustomRepository.findRandom(amount)
 			.stream()
@@ -90,7 +94,7 @@ public class PerfumeService {
 	}
 
 	public List<PerfumeResponse> getPerfumeByOverall(Integer amount) {
-		if(amount > 10)
+		if (amount > 10)
 			throw new CustomException(ErrorCode.PERFUME_TOO_MANY_AMOUNT);
 		return perfumeCustomRepository.findOrderByOverall(amount)
 			.stream()

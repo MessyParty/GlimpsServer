@@ -16,9 +16,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import com.fasterxml.uuid.Generators;
 import com.glimps.glimpsserver.common.config.SecurityConfig;
@@ -148,6 +153,43 @@ class PerfumeControllerTest {
 			.andExpect(jsonPath("$[0].longevityRatings").value(LONGEVITY))
 			.andExpect(jsonPath("$[0].sillageRatings").value(SILLAGE))
 			.andExpect(jsonPath("$[0].reviewCnt").value(REVIEW_CNT))
+			.andDo(print());
+	}
+
+	@Test
+	@DisplayName("전달된 개수만큼의 향수를 조회한다.")
+	void given_ValidBrand_When_SearchByBrand_Then_Success() throws Exception {
+		//given
+		List<PerfumeResponse> contents = List.of(PERFUME_DTO, PERFUME_DTO, PERFUME_DTO);
+		int page = 0, size = 3;
+		boolean hasNext = true;
+		Pageable pageable = PageRequest.of(page, size);
+
+		given(perfumeService.getPerfumeByBrand(BRAND.getBrandName(), pageable))
+			.willReturn(new SliceImpl<>(contents, pageable, hasNext));
+
+		MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+		parameters.add("brand", BRAND.getBrandName());
+		parameters.add("page", String.valueOf(page));
+		parameters.add("size", String.valueOf(size));
+
+		//when
+		mockMvc.perform(get("/perfumes").params(parameters))
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+			.andExpect(jsonPath("$.content.length()").value(3))
+			.andExpect(jsonPath("$.content[0].uuid").value(PERFUME_UUID.toString()))
+			.andExpect(jsonPath("$.content[0].brandId").value(BRAND.getId()))
+			.andExpect(jsonPath("$.content[0].brandName").value(BRAND.getBrandName()))
+			.andExpect(jsonPath("$.content[0].perfumeName").value(PERFUME_NAME))
+			.andExpect(jsonPath("$.content[0].overallRatings").value(OVERALL))
+			.andExpect(jsonPath("$.content[0].longevityRatings").value(LONGEVITY))
+			.andExpect(jsonPath("$.content[0].sillageRatings").value(SILLAGE))
+			.andExpect(jsonPath("$.content[0].reviewCnt").value(REVIEW_CNT))
+			.andExpect(jsonPath("$.pageable.pageNumber").value(0))
+			.andExpect(jsonPath("$.pageable.pageSize").value(3))
+			.andExpect(jsonPath("$.first").value(true))
+			.andExpect(jsonPath("$.last").value(false))
 			.andDo(print());
 	}
 

@@ -48,6 +48,7 @@ public class PerfumeResponse {
 			.uuid(perfume.getUuid())
 			.brandId(perfume.getBrand().getId())
 			.brandName(perfume.getBrand().getBrandName())
+			.perfumeName(perfume.getPerfumeName())
 			.overallRatings(perfume.getOverallRatings())
 			.longevityRatings(perfume.getLongevityRatings())
 			.sillageRatings(perfume.getSillageRatings())
