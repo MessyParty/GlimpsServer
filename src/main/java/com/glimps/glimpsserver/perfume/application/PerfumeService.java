@@ -17,6 +17,7 @@ import com.glimps.glimpsserver.perfume.domain.Note;
 import com.glimps.glimpsserver.perfume.domain.Perfume;
 import com.glimps.glimpsserver.perfume.domain.PerfumeNote;
 import com.glimps.glimpsserver.perfume.dto.PerfumeResponse;
+import com.glimps.glimpsserver.perfume.dto.PerfumeSearchCondition;
 import com.glimps.glimpsserver.perfume.infra.PerfumeCustomRepository;
 import com.glimps.glimpsserver.perfume.infra.PerfumeRepository;
 import com.glimps.glimpsserver.review.dto.ReviewCreateRequest;
@@ -57,7 +58,7 @@ public class PerfumeService {
 
 	public PerfumeResponse getPerfumeWithNotesAndBrand(UUID uuid) {
 		Perfume perfume = findPerfumeWithEntities(uuid);
-		List<Note> notes = perfume.getPerfumeNotes().stream().map(PerfumeNote::getNote).collect(Collectors.toList());
+		List<Note> notes = getNotes(perfume);
 		return PerfumeResponse.of(perfume, notes);
 	}
 
@@ -77,11 +78,11 @@ public class PerfumeService {
 	}
 
 	public Slice<PerfumeResponse> getPerfumeByBrand(String brandName, Pageable pageable) {
-		Slice<Perfume> perfumes = perfumeCustomRepository.searchByBrand(brandName, pageable);
-		List<PerfumeResponse> perfumeResponses = perfumes.stream()
+		Slice<Perfume> slice = perfumeCustomRepository.searchByBrand(brandName, pageable);
+		List<PerfumeResponse> content = slice.stream()
 			.map(PerfumeResponse::of)
 			.collect(Collectors.toList());
-		return new SliceImpl<>(perfumeResponses, perfumes.getPageable(), perfumes.hasNext());
+		return new SliceImpl<>(content, slice.getPageable(), slice.hasNext());
 	}
 
 	public List<PerfumeResponse> getRandomPerfume(Integer amount) {
@@ -102,4 +103,11 @@ public class PerfumeService {
 			.collect(Collectors.toList());
 	}
 
+	public Slice<PerfumeResponse> search(PerfumeSearchCondition condition, Pageable pageable) {
+		return perfumeCustomRepository.searchByCondition(condition, pageable);
+	}
+
+	private static List<Note> getNotes(Perfume perfume) {
+		return perfume.getPerfumeNotes().stream().map(PerfumeNote::getNote).collect(Collectors.toList());
+	}
 }

@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import javax.validation.constraints.NotNull;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.glimps.glimpsserver.perfume.application.PerfumeService;
 import com.glimps.glimpsserver.perfume.dto.PerfumeResponse;
+import com.glimps.glimpsserver.perfume.dto.PerfumeSearchCondition;
 
 import io.swagger.annotations.ApiImplicitParam;
 import lombok.RequiredArgsConstructor;
@@ -49,13 +49,9 @@ public class PerfumeController {
 	}
 
 	@GetMapping("/search")
-	public Page<PerfumeResponse> search(
-		@RequestParam("brand") String brandName,
-		@RequestParam("name") String perfumeName,
-		@RequestParam String note,
-		Pageable pageable
+	public Slice<PerfumeResponse> search(PerfumeSearchCondition condition, Pageable pageable
 	) {
-		return null;
+		return perfumeService.search(condition, pageable);
 	}
 
 	/**
@@ -66,6 +62,5 @@ public class PerfumeController {
 	public List<PerfumeResponse> getAll() {
 		return perfumeService.getAll();
 	}
-
 
 }
