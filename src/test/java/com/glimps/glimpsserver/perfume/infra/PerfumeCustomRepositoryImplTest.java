@@ -39,9 +39,9 @@ class PerfumeCustomRepositoryImplTest {
 
 	@BeforeEach
 	void setUp() {
-		Brand CK = Brand.builder().brandName("CK").build();
-		Brand Chanel = Brand.builder().brandName("Chanel").build();
-		Brand Dummy = Brand.builder().brandName("Dummy").build();
+		Brand CK = Brand.builder().brandNameEng("CK").build();
+		Brand Chanel = Brand.builder().brandNameEng("Chanel").build();
+		Brand Dummy = Brand.builder().brandNameEng("Dummy").build();
 
 		List<Perfume> dummies = new ArrayList<>();
 		for (int i = 0; i < 10; i++) {
@@ -164,7 +164,6 @@ class PerfumeCustomRepositoryImplTest {
 		assertThat(slice1.getContent()).hasSize(size);
 	}
 
-
 	@Test
 	@DisplayName("존재하지 않는 브랜드가 전달되면 빈 Slice객체를 반환한다.")
 	void given_InValidBrand_When_findWithBrand_Then_NotFound() {
@@ -187,6 +186,5 @@ class PerfumeCustomRepositoryImplTest {
 		assertThat(slice0.getNumberOfElements()).isZero();
 		assertThat(slice1.getContent()).isEmpty();
 	}
-
 
 }

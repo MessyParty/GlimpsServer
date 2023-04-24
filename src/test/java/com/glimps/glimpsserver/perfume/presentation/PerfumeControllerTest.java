@@ -41,7 +41,7 @@ class PerfumeControllerTest {
 
 	public static final UUID PERFUME_UUID = Generators.timeBasedGenerator().generate();
 	public static final UUID NOT_EXIST_UUID = Generators.timeBasedGenerator().generate();
-	public static final Brand BRAND = Brand.builder().brandName("CK").id(2L).build();
+	public static final Brand BRAND = Brand.builder().brandNameEng("CK").id(2L).build();
 	public static final String PERFUME_NAME = "ONE";
 	public static final Double OVERALL = 4.7;
 	public static final Double LONGEVITY = 4.7;
@@ -59,7 +59,7 @@ class PerfumeControllerTest {
 	public static final PerfumeResponse PERFUME_DTO = PerfumeResponse.builder()
 		.uuid(PERFUME_UUID)
 		.brandId(BRAND.getId())
-		.brandName(BRAND.getBrandName())
+		.brandName(BRAND.getBrandNameEng())
 		.perfumeName(PERFUME_NAME)
 		.overallRatings(OVERALL)
 		.longevityRatings(LONGEVITY)
@@ -85,7 +85,7 @@ class PerfumeControllerTest {
 			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
 			.andExpect(jsonPath("$.uuid").value(PERFUME_UUID.toString()))
 			.andExpect(jsonPath("$.brandId").value(BRAND.getId()))
-			.andExpect(jsonPath("$.brandName").value(BRAND.getBrandName()))
+			.andExpect(jsonPath("$.brandName").value(BRAND.getBrandNameEng()))
 			.andExpect(jsonPath("$.perfumeName").value(PERFUME_NAME))
 			.andExpect(jsonPath("$.overallRatings").value(OVERALL))
 			.andExpect(jsonPath("$.longevityRatings").value(LONGEVITY))
@@ -125,7 +125,7 @@ class PerfumeControllerTest {
 			.andExpect(jsonPath("$.length()").value(3))
 			.andExpect(jsonPath("$[0].uuid").value(PERFUME_UUID.toString()))
 			.andExpect(jsonPath("$[0].brandId").value(BRAND.getId()))
-			.andExpect(jsonPath("$[0].brandName").value(BRAND.getBrandName()))
+			.andExpect(jsonPath("$[0].brandName").value(BRAND.getBrandNameEng()))
 			.andExpect(jsonPath("$[0].perfumeName").value(PERFUME_NAME))
 			.andExpect(jsonPath("$[0].overallRatings").value(OVERALL))
 			.andExpect(jsonPath("$[0].longevityRatings").value(LONGEVITY))
@@ -147,7 +147,7 @@ class PerfumeControllerTest {
 			.andExpect(jsonPath("$.length()").value(3))
 			.andExpect(jsonPath("$[0].uuid").value(PERFUME_UUID.toString()))
 			.andExpect(jsonPath("$[0].brandId").value(BRAND.getId()))
-			.andExpect(jsonPath("$[0].brandName").value(BRAND.getBrandName()))
+			.andExpect(jsonPath("$[0].brandName").value(BRAND.getBrandNameEng()))
 			.andExpect(jsonPath("$[0].perfumeName").value(PERFUME_NAME))
 			.andExpect(jsonPath("$[0].overallRatings").value(OVERALL))
 			.andExpect(jsonPath("$[0].longevityRatings").value(LONGEVITY))
@@ -165,11 +165,11 @@ class PerfumeControllerTest {
 		boolean hasNext = true;
 		Pageable pageable = PageRequest.of(page, size);
 
-		given(perfumeService.getPerfumeByBrand(BRAND.getBrandName(), pageable))
+		given(perfumeService.getPerfumeByBrand(BRAND.getBrandNameEng(), pageable))
 			.willReturn(new SliceImpl<>(contents, pageable, hasNext));
 
 		MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
-		parameters.add("brand", BRAND.getBrandName());
+		parameters.add("brand", BRAND.getBrandNameEng());
 		parameters.add("page", String.valueOf(page));
 		parameters.add("size", String.valueOf(size));
 
@@ -180,7 +180,7 @@ class PerfumeControllerTest {
 			.andExpect(jsonPath("$.content.length()").value(3))
 			.andExpect(jsonPath("$.content[0].uuid").value(PERFUME_UUID.toString()))
 			.andExpect(jsonPath("$.content[0].brandId").value(BRAND.getId()))
-			.andExpect(jsonPath("$.content[0].brandName").value(BRAND.getBrandName()))
+			.andExpect(jsonPath("$.content[0].brandName").value(BRAND.getBrandNameEng()))
 			.andExpect(jsonPath("$.content[0].perfumeName").value(PERFUME_NAME))
 			.andExpect(jsonPath("$.content[0].overallRatings").value(OVERALL))
 			.andExpect(jsonPath("$.content[0].longevityRatings").value(LONGEVITY))

@@ -38,7 +38,7 @@ public class PerfumeCustomRepositoryImpl implements PerfumeCustomRepository {
 		List<Perfume> content = queryFactory.selectFrom(perfume)
 			.leftJoin(perfume.brand, brand)
 			.fetchJoin()
-			.where(brand.brandName.eq(brandName))
+			.where(brandLike(brandName))
 			.offset(pageable.getOffset())
 			.limit((long)pageable.getPageSize() + 1)
 			.fetch();
@@ -96,7 +96,10 @@ public class PerfumeCustomRepositoryImpl implements PerfumeCustomRepository {
 	private BooleanBuilder brandLike(String brandName) {
 		if (brandName == null)
 			return new BooleanBuilder();
-		return new BooleanBuilder(brand.brandName.startsWith(brandName.toUpperCase()));
+		else if (brandName.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*"))
+			return new BooleanBuilder(brand.brandNameKor.startsWith(brandName));
+
+		return new BooleanBuilder(brand.brandNameEng.startsWith(brandName));
 	}
 
 	private BooleanBuilder noteLike(String noteName) {

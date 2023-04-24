@@ -23,6 +23,7 @@ class PerfumeRepositoryTest {
 	public static final UUID NOT_EXIST_UUID = Generators.timeBasedGenerator().generate();
 	public static final String PERFUME_NAME = "ONE";
 	public static final String BRAND_NAME = "CK";
+	public static final String BRAND_NAME_KOR = "캘빈 클라인";
 	public static final Double OVERALL = 4.7;
 	public static final Double LONGEVITY = 4.7;
 	public static final Double SILLAGE = 4.7;
@@ -35,10 +36,9 @@ class PerfumeRepositoryTest {
 	@Autowired
 	private NoteRepository noteRepository;
 
-
 	@BeforeEach
 	void setUp() {
-		Brand CK = Brand.builder().brandName(BRAND_NAME).build();
+		Brand CK = Brand.builder().brandNameEng(BRAND_NAME).brandNameKor(BRAND_NAME_KOR).build();
 
 		Perfume perfume = Perfume.builder()
 			.uuid(PERFUME_UUID)
@@ -53,8 +53,6 @@ class PerfumeRepositoryTest {
 		Note PINEAPPLE = Note.builder().korName("파인애플").engName("PINEAPPLE").build();
 		Note LEMON = Note.builder().korName("레몬").engName("LEMON").build();
 		Note MUSK = Note.builder().korName("머스크").engName("MUSK").build();
-
-
 
 		brandRepository.save(CK);
 		noteRepository.save(LEMON);
@@ -78,13 +76,13 @@ class PerfumeRepositoryTest {
 		Perfume perfume = OptionalPerfume.get();
 
 		assertThat(perfume.getUuid()).isEqualTo(PERFUME_UUID);
-		assertThat(perfume.getBrand().getBrandName()).isEqualTo(BRAND_NAME);
+		assertThat(perfume.getBrand().getBrandNameEng()).isEqualTo(BRAND_NAME);
+		assertThat(perfume.getBrand().getBrandNameKor()).isEqualTo(BRAND_NAME_KOR);
 		assertThat(perfume.getPerfumeName()).isEqualTo(PERFUME_NAME);
 		assertThat(perfume.getOverallRatings()).isEqualTo(OVERALL);
 		assertThat(perfume.getLongevityRatings()).isEqualTo(LONGEVITY);
 		assertThat(perfume.getSillageRatings()).isEqualTo(SILLAGE);
 		assertThat(perfume.getReviewCnt()).isEqualTo(REVIEW_CNT);
-
 
 		assertThat(perfume.getPerfumeNotes()).hasSize(3);
 

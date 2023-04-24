@@ -44,8 +44,8 @@ class PerfumeServiceTest {
 	public static final Double SILLAGE = 4.7;
 	public static final int REVIEW_CNT = 420;
 
-	public static final Brand CK = Brand.builder().brandName(BRAND_NAME1).build();
-	public static final Brand CHANEL = Brand.builder().brandName(BRAND_NAME2).build();
+	public static final Brand CK = Brand.builder().brandNameEng(BRAND_NAME1).build();
+	public static final Brand CHANEL = Brand.builder().brandNameEng(BRAND_NAME2).build();
 
 	public static final Perfume ONE = Perfume.builder()
 		.uuid(PERFUME1_UUID)
@@ -204,6 +204,5 @@ class PerfumeServiceTest {
 		assertThat(result.getNumberOfElements()).isEqualTo(3);
 
 	}
-
 
 }

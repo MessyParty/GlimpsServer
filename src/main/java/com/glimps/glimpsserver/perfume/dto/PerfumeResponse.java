@@ -19,11 +19,12 @@ import lombok.Getter;
 @AllArgsConstructor
 public class PerfumeResponse {
 
-
 	private UUID uuid;
 
 	private Long brandId;
 	private String brandName;
+	private String brandNameKor;
+
 	private String perfumeName;
 
 	private double overallRatings;
@@ -33,12 +34,12 @@ public class PerfumeResponse {
 
 	private List<NoteResponse> notes = new ArrayList<>();
 
-
 	public static PerfumeResponse of(Perfume perfume, List<Note> notes) {
 		return PerfumeResponse.builder()
 			.uuid(perfume.getUuid())
 			.brandId(perfume.getBrand().getId())
-			.brandName(perfume.getBrand().getBrandName())
+			.brandName(perfume.getBrand().getBrandNameEng())
+			.brandNameKor(perfume.getBrand().getBrandNameKor())
 			.perfumeName(perfume.getPerfumeName())
 			.overallRatings(perfume.getOverallRatings())
 			.longevityRatings(perfume.getLongevityRatings())
@@ -52,7 +53,8 @@ public class PerfumeResponse {
 		return PerfumeResponse.builder()
 			.uuid(perfume.getUuid())
 			.brandId(perfume.getBrand().getId())
-			.brandName(perfume.getBrand().getBrandName())
+			.brandName(perfume.getBrand().getBrandNameEng())
+			.brandNameKor(perfume.getBrand().getBrandNameKor())
 			.perfumeName(perfume.getPerfumeName())
 			.overallRatings(perfume.getOverallRatings())
 			.longevityRatings(perfume.getLongevityRatings())
@@ -65,7 +67,8 @@ public class PerfumeResponse {
 	public PerfumeResponse(Perfume perfume, Brand brand, List<Note> notes) {
 		this.uuid = perfume.getUuid();
 		this.brandId = brand.getId();
-		this.brandName = brand.getBrandName();
+		this.brandName = brand.getBrandNameEng();
+		this.brandNameKor = brand.getBrandNameKor();
 		this.perfumeName = perfume.getPerfumeName();
 		this.overallRatings = perfume.getOverallRatings();
 		this.longevityRatings = perfume.getLongevityRatings();
