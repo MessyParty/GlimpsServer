@@ -48,7 +48,7 @@ public class PerfumeCustomRepositoryImpl implements PerfumeCustomRepository {
 
 	@Override
 	public List<Perfume> findRandom(Integer amount) {
-		String query = "SELECT * FROM PERFUME "
+		String query = "SELECT * FROM perfume "
 			+ "ORDER BY rand() limit :amount";
 		return em.createNativeQuery(query, Perfume.class)
 			.setParameter("amount", amount)
