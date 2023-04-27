@@ -1,5 +1,6 @@
 package com.glimps.glimpsserver.perfume.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -18,18 +19,16 @@ import lombok.NoArgsConstructor;
 @Table(name = "perfume_photos")
 @Entity
 public class PerfumePhoto {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "perfume_id")
+	private Perfume perfume;
 
+	private String url;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "perfume_id")
-    private Perfume perfume;
-    
-    private String Url;
-
-
-
+	@Column(columnDefinition = "TINYINT")
+	private Integer orderNum;
 }

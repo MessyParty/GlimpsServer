@@ -55,6 +55,9 @@ public class Perfume {
 	@OneToMany(mappedBy = "perfume", cascade = CascadeType.PERSIST, orphanRemoval = true)
 	private List<PerfumeNote> perfumeNotes = new ArrayList<>();
 
+	@OneToMany(mappedBy = "perfume", cascade = CascadeType.PERSIST, orphanRemoval = true)
+	private List<PerfumePhoto> perfumePhotos = new ArrayList<>();
+
 	@Builder
 	public Perfume(UUID uuid, Brand brand, String perfumeName, double overallRatings, double longevityRatings,
 		double sillageRatings, int reviewCnt) {

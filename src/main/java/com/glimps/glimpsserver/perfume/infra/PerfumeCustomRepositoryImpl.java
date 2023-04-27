@@ -4,6 +4,7 @@ import static com.glimps.glimpsserver.perfume.domain.QBrand.*;
 import static com.glimps.glimpsserver.perfume.domain.QNote.*;
 import static com.glimps.glimpsserver.perfume.domain.QPerfume.*;
 import static com.glimps.glimpsserver.perfume.domain.QPerfumeNote.*;
+import static com.glimps.glimpsserver.perfume.domain.QPerfumePhoto.*;
 import static com.querydsl.core.group.GroupBy.*;
 
 import java.util.List;
@@ -38,6 +39,8 @@ public class PerfumeCustomRepositoryImpl implements PerfumeCustomRepository {
 		List<Perfume> content = queryFactory.selectFrom(perfume)
 			.leftJoin(perfume.brand, brand)
 			.fetchJoin()
+			.leftJoin(perfume.perfumePhotos, perfumePhoto)
+			.fetchJoin()
 			.where(brandLike(brandName))
 			.offset(pageable.getOffset())
 			.limit((long)pageable.getPageSize() + 1)
@@ -68,6 +71,7 @@ public class PerfumeCustomRepositoryImpl implements PerfumeCustomRepository {
 		List<PerfumeResponse> content = queryFactory
 			.from(perfume)
 			.leftJoin(perfume.brand, brand)
+			.leftJoin(perfume.perfumePhotos, perfumePhoto)
 			.leftJoin(perfume.perfumeNotes, perfumeNote)
 			.leftJoin(perfumeNote.note, note)
 			.where(
@@ -80,7 +84,8 @@ public class PerfumeCustomRepositoryImpl implements PerfumeCustomRepository {
 				new QPerfumeResponse(
 					perfume,
 					brand,
-					list(note)
+					list(note),
+					list(perfumePhoto)
 				)
 			));
 
