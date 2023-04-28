@@ -1,9 +1,10 @@
 package com.glimps.glimpsserver.common.config;
 
+import static org.springframework.http.HttpMethod.*;
+
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -38,9 +39,7 @@ public class SecurityConfig {
 	private final List<AntPathRequestMatcher> matchers;
 	private final OAuth2FailureHandler oAuth2FailureHandler;
 
-
 	@Bean
-
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
 		http.cors();
@@ -67,18 +66,26 @@ public class SecurityConfig {
 			.userInfoEndpoint()
 			.userService(oAuth2UserService);
 
-
 		http.authorizeRequests()
-			.antMatchers(MatcherConfig.AuthURLs().toArray(new String[0])).authenticated()
-			.antMatchers(HttpMethod.GET,MatcherConfig.GetURLs().toArray(new String[0])).authenticated()
-			.antMatchers(HttpMethod.POST,MatcherConfig.PostURLs().toArray(new String[0])).authenticated()
-			.antMatchers(HttpMethod.PATCH,MatcherConfig.PatchURLs().toArray(new String[0])).authenticated()
-			.antMatchers(HttpMethod.DELETE,MatcherConfig.DeleteURLs().toArray(new String[0])).authenticated()
+			.antMatchers(MatcherConfig.authURLs().toArray(new String[0])).authenticated()
+			.antMatchers(GET, MatcherConfig.getURLs().toArray(new String[0])).authenticated()
+			.antMatchers(POST, MatcherConfig.postURLs().toArray(new String[0])).authenticated()
+			.antMatchers(PATCH, MatcherConfig.patchURLs().toArray(new String[0])).authenticated()
+			.antMatchers(DELETE, MatcherConfig.deleteURLs().toArray(new String[0])).authenticated()
 			.antMatchers(MatcherConfig.getAdminURL().toArray(new String[0])).hasRole("ADMIN")
 			.anyRequest().permitAll();
 
-		http.addFilterBefore(new JwtAuthenticationFilter(authenticationService, mapper, matchers),
-			UsernamePasswordAuthenticationFilter.class);
+		http
+		// 	.requestMatchers()
+		// 	.antMatchers(MatcherConfig.AuthURLs().toArray(new String[0]))
+		// 	.antMatchers(HttpMethod.GET, MatcherConfig.GetURLs().toArray(new String[0]))
+		// 	.antMatchers(HttpMethod.POST, MatcherConfig.PostURLs().toArray(new String[0]))
+		// 	.antMatchers(HttpMethod.PATCH, MatcherConfig.PatchURLs().toArray(new String[0]))
+		// 	.antMatchers(HttpMethod.DELETE, MatcherConfig.DeleteURLs().toArray(new String[0]))
+		// 	.antMatchers(MatcherConfig.getAdminURL().toArray(new String[0]))
+		// 	.and()
+			.addFilterBefore(new JwtAuthenticationFilter(authenticationService, mapper, matchers),
+				UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}
