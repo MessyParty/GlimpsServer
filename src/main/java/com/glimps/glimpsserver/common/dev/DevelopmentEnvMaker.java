@@ -12,6 +12,7 @@ import com.glimps.glimpsserver.perfume.domain.Brand;
 import com.glimps.glimpsserver.perfume.domain.Note;
 import com.glimps.glimpsserver.perfume.domain.Perfume;
 import com.glimps.glimpsserver.perfume.domain.PerfumeNote;
+import com.glimps.glimpsserver.perfume.domain.PerfumePhoto;
 import com.glimps.glimpsserver.perfume.dto.CreateNoteRequest;
 import com.glimps.glimpsserver.perfume.infra.BrandRepository;
 import com.glimps.glimpsserver.perfume.infra.NoteRepository;
@@ -51,12 +52,24 @@ public class DevelopmentEnvMaker {
 		Brand ck = Brand.createBrand("CK","캘빈클라인");
 		brandRepository.saveAll(List.of(brand, ck));
 
+		PerfumePhoto photo1 = PerfumePhoto.builder()
+			.url("https://picsum.photos/200/300")
+			.orderNum(0)
+			.build();
+
+		PerfumePhoto photo2 = PerfumePhoto.builder()
+			.url("https://picsum.photos/200/300")
+			.orderNum(0)
+			.build();
+
 		Perfume no5 = Perfume.createPerfume(brand, "NO.5");
 		no5.updateRatings(5, 4, 3);
+		no5.addPhoto(photo1);
 		perfumeRepository.save(no5);
 
 		Perfume one = Perfume.createPerfume(ck, "ONE");
 		one.updateRatings(4.5, 3, 1);
+		one.addPhoto(photo2);
 		perfumeRepository.save(one);
 
 		Note suede = Note.createNote(new CreateNoteRequest("SUEDE", "스웨이드"));

@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,4 +32,15 @@ public class PerfumePhoto {
 
 	@Column(columnDefinition = "TINYINT")
 	private Integer orderNum;
+
+	@Builder
+	public PerfumePhoto(Perfume perfume, String url, Integer orderNum) {
+		this.perfume = perfume;
+		this.url = url;
+		this.orderNum = orderNum;
+	}
+
+	public void mapTo(Perfume perfume) {
+		this.perfume = perfume;
+	}
 }

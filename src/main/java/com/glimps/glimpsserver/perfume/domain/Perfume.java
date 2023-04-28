@@ -123,6 +123,11 @@ public class Perfume {
 		this.perfumeNotes.add(PerfumeNote.mapNoteToPerfume(this, note));
 	}
 
+	public void addPhoto(PerfumePhoto photo) {
+		this.perfumePhotos.add(photo);
+		photo.mapTo(this);
+	}
+
 	public void removeNote(Note note) {
 		this.perfumeNotes.stream()
 			.filter(pn -> pn.getNote().getId().equals(note.getId()))
