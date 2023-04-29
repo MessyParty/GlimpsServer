@@ -22,4 +22,6 @@ public interface ReviewCustomRepository {
 	List<Review> findAllByPerfumeId(UUID perfumeId);
 
 	List<Review> findBestReviewByAmount(int amountOfBestReview);
+
+  List<Review> findBestReviewByPerfumeId(UUID perfumeUuid);
 }

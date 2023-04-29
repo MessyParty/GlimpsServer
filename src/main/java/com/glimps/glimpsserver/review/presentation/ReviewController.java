@@ -132,6 +132,13 @@ public class ReviewController {
 		return ReviewResponse.of(reviews);
 	}
 
+	@ApiOperation(value = "향수에 대한 베스트 리뷰 조회", notes = "향수에 대한 베스트 리뷰를 조회합니다.")
+	@GetMapping("/{perfumeUuid}/bestReviews")
+	public List<ReviewResponse> perfumeBestReviews(@PathVariable UUID perfumeUuid) {
+		List<Review> reviews = reviewService.getPerfumeBestReviews(perfumeUuid);
+		return ReviewResponse.of(reviews);
+	}
+
 	@ApiOperation(value = "리뷰 수정", notes = "리뷰를 수정합니다. (권한: ROLE_USER)")
 	@ApiImplicitParam(name = "uuid", value = "리뷰 uuid", required = true, dataType = "string", paramType = "path")
 	@PatchMapping("/{uuid}")
