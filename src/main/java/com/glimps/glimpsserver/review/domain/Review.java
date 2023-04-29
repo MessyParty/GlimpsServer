@@ -68,6 +68,7 @@ public class Review extends BaseTimeEntity {
 	private double longevityRatings;
 
 	private double sillageRatings;
+	private double scentRatings;
 
 	public static Review createReview(ReviewCreateRequest reviewCreateRequest, User user, Perfume perfume) {
 		user.addReviewCnt();
@@ -80,6 +81,7 @@ public class Review extends BaseTimeEntity {
 			.overallRatings(reviewCreateRequest.getOverallRatings())
 			.longevityRatings(reviewCreateRequest.getLongevityRatings())
 			.sillageRatings(reviewCreateRequest.getSillageRatings())
+			.scentRatings(reviewCreateRequest.getScentRatings())
 			.build();
 	}
 
@@ -113,5 +115,7 @@ public class Review extends BaseTimeEntity {
 				.getLongevityRatings();
 		this.sillageRatings = reviewUpdateRequest.getSillageRatings() == null ? this.sillageRatings : reviewUpdateRequest
 			.getSillageRatings();
+		this.scentRatings = reviewUpdateRequest.getScentRatings() == null ? this.scentRatings : reviewUpdateRequest
+			.getScentRatings();
 	}
 }

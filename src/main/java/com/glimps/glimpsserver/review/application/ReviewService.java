@@ -27,6 +27,7 @@ import com.glimps.glimpsserver.user.domain.User;
 @Service
 @Transactional(readOnly = true)
 public class ReviewService {
+
 	private final ReviewCustomRepository reviewCustomRepository;
 	private final ReviewRepository reviewRepository;
 	private final UserService userService;
@@ -35,8 +36,8 @@ public class ReviewService {
 	private final ReviewHeartService reviewHeartService;
 
 	public ReviewService(ReviewCustomRepository reviewCustomRepository, ReviewRepository reviewRepository,
-		UserService userService,
-		ReviewPhotoService reviewPhotoService, PerfumeService perfumeService, ReviewHeartService reviewHeartService) {
+			UserService userService,
+			ReviewPhotoService reviewPhotoService, PerfumeService perfumeService, ReviewHeartService reviewHeartService) {
 		this.reviewCustomRepository = reviewCustomRepository;
 		this.reviewRepository = reviewRepository;
 		this.userService = userService;
@@ -66,7 +67,7 @@ public class ReviewService {
 		int offset = reviewPageParam.getOffset();
 
 		Pageable pageRequest = PageRequest.of(offset, reviewPageParam.getLimit(),
-			reviewPageParam.getSortType().getDirection(), reviewPageParam.getOrderStandard().getProperty());
+				reviewPageParam.getSortType().getDirection(), reviewPageParam.getOrderStandard().getProperty());
 
 		User user = userService.getUserByEmail(email);
 
@@ -81,8 +82,8 @@ public class ReviewService {
 		int offset = reviewPageParam.getOffset();
 
 		Pageable pageRequest = PageRequest.of(offset, reviewPageParam.getLimit(),
-			reviewPageParam.getSortType().getDirection(),
-			reviewPageParam.getOrderStandard().getProperty());
+				reviewPageParam.getSortType().getDirection(),
+				reviewPageParam.getOrderStandard().getProperty());
 		return reviewCustomRepository.findAllByOrder(pageRequest);
 	}
 
@@ -113,7 +114,7 @@ public class ReviewService {
 
 	private Review findReview(UUID uuid) {
 		return reviewCustomRepository.findByUuid(uuid)
-			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.REVIEW_NOT_FOUND, uuid));
+				.orElseThrow(() -> new EntityNotFoundException(ErrorCode.REVIEW_NOT_FOUND, uuid));
 	}
 
 	public Review updateReview(UUID uuid, ReviewUpdateRequest reviewUpdateRequest, String email) {
@@ -126,14 +127,17 @@ public class ReviewService {
 		Perfume perfume = review.getPerfume();
 
 		if (reviewUpdateRequest.getOverallRatings() != null && reviewUpdateRequest.getLongevityRatings() != null
-			&& reviewUpdateRequest.getSillageRatings() != null) {
-			ReviewRatings reviewRatings = new ReviewRatings(reviewUpdateRequest.getOverallRatings(),
-				reviewUpdateRequest.getLongevityRatings(), reviewUpdateRequest.getSillageRatings());
+				&& reviewUpdateRequest.getSillageRatings() != null) {
+			ReviewRatings reviewRatings = new ReviewRatings(
+					reviewUpdateRequest.getOverallRatings(),
+					reviewUpdateRequest.getLongevityRatings(),
+					reviewUpdateRequest.getSillageRatings(),
+					reviewUpdateRequest.getScentRatings());
 			perfumeService.updateRatings(perfume, reviewUpdateRequest, reviewRatings);
 		}
 
 		reviewPhotoService.updateReviewPhotos(review,
-			reviewUpdateRequest.getPhotoUrls());
+				reviewUpdateRequest.getPhotoUrls());
 		review.updateReview(reviewUpdateRequest);
 		return review;
 	}
@@ -144,8 +148,11 @@ public class ReviewService {
 		if (!review.authorize(user)) {
 			throw new ReviewAuthorityException(ErrorCode.NO_AUTHORITY, email);
 		}
-		ReviewRatings reviewRatings = new ReviewRatings(review.getOverallRatings(), review.getLongevityRatings(),
-			review.getSillageRatings());
+		ReviewRatings reviewRatings = new ReviewRatings(
+				review.getOverallRatings(),
+				review.getLongevityRatings(),
+				review.getSillageRatings(),
+				review.getScentRatings());
 		perfumeService.updateRatings(review.getPerfume(), reviewRatings);
 		reviewPhotoService.deleteReviewPhotos(review);
 		reviewRepository.delete(review);

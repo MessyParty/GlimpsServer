@@ -43,6 +43,7 @@ public class Perfume {
 	private double overallRatings;
 	private double longevityRatings;
 	private double sillageRatings;
+	private double scentRatings;
 
 	private int reviewCnt;
 
@@ -54,6 +55,7 @@ public class Perfume {
 			.overallRatings(0)
 			.longevityRatings(0)
 			.sillageRatings(0)
+			.scentRatings(0)
 			.reviewCnt(0)
 			.build();
 	}
@@ -62,6 +64,7 @@ public class Perfume {
 		this.overallRatings = (this.overallRatings * reviewCnt + overallRatings) / (reviewCnt + 1);
 		this.longevityRatings = (this.longevityRatings * reviewCnt + longevityRatings) / (reviewCnt + 1);
 		this.sillageRatings = (this.sillageRatings * reviewCnt + sillageRatings) / (reviewCnt + 1);
+		this.scentRatings = (this.scentRatings * reviewCnt + sillageRatings) / (reviewCnt + 1);
 		increaseReviewCount();
 	}
 
@@ -73,6 +76,8 @@ public class Perfume {
 			(this.longevityRatings * reviewCnt + longevityRatings - reviewRatings.getLongevityRatings()) / reviewCnt;
 		this.sillageRatings =
 			(this.sillageRatings * reviewCnt + sillageRatings - reviewRatings.getSillageRatings()) / reviewCnt;
+		this.scentRatings =
+			(this.scentRatings * reviewCnt + sillageRatings - reviewRatings.getScentRatings()) / reviewCnt;
 	}
 
 	public void updateRatings(ReviewRatings reviewRatings) {
@@ -80,6 +85,7 @@ public class Perfume {
 		this.longevityRatings =
 			(this.longevityRatings * reviewCnt - reviewRatings.getLongevityRatings()) / (reviewCnt - 1);
 		this.sillageRatings = (this.sillageRatings * reviewCnt - reviewRatings.getSillageRatings()) / (reviewCnt - 1);
+		this.scentRatings = (this.scentRatings * reviewCnt - reviewRatings.getScentRatings()) / (reviewCnt - 1);
 		decreaseReviewCount();
 	}
 
