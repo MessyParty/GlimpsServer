@@ -6,11 +6,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.glimps.glimpsserver.common.config.SecurityConfig;
+import com.glimps.glimpsserver.common.jwt.JwtUtil;
 import com.glimps.glimpsserver.config.WithMockCustomUser;
 
 @WebMvcTest(controllers = TestController.class,
@@ -22,6 +24,8 @@ class TestControllerTest {
 	private static final String ROLE = "ROLE_USER";
 	@Autowired
 	private MockMvc mockMvc;
+	@MockBean
+	private JwtUtil jwtUtil;
 
 	@WithMockCustomUser(userName = EMAIL, role = ROLE)
 	@Test

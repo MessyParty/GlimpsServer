@@ -20,8 +20,8 @@ public class BrandService {
 	}
 
 	public List<BrandResponse> getAllBrands() {
-		return brandRepository.findAll().stream().map((b) ->
-				new BrandResponse(b.getId(), b.getBrandNameEng(), b.getBrandNameKor()))
+		return brandRepository.findAll().stream().map(b ->
+				new BrandResponse(b.getId(), b.getBrandNameKor(), b.getBrandNameEng()))
         .collect(Collectors.toList());
 	}
 

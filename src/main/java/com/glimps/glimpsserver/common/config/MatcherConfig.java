@@ -1,22 +1,33 @@
 package com.glimps.glimpsserver.common.config;
 
+import static org.springframework.http.HttpMethod.*;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 public class MatcherConfig {
+	private static final List<String> ALL_URL = new ArrayList<>();
+	private static final List<String> GET_URL = new ArrayList<>();
+	private static final List<String> POST_URL = new ArrayList<>();
+	private static final List<String> PATCH_URL = new ArrayList<>();
+	private static final List<String> DELETE_URL = new ArrayList<>();
+	private static final List<String> ADMIN_URL = new ArrayList<>();
 
-	private static final List<String> ALL_URL = List.of("/test");
-	private static final List<String> GET_URL = List.of("${api.prefix}/users");
-	private static final List<String> POST_URL = List.of("${api.prefix}/logout");
-	private static final List<String> PATCH_URL = List.of("${api.prefix}/users");
-	private static final List<String> DELETE_URL = List.of("${api.prefix}/mock");
-	private static final List<String> ADMIN_URL = List.of("/admin/**");
+	public MatcherConfig(@Value("${api.prefix}") String prefix) {
+		ALL_URL.add("/test");
+		GET_URL.add(prefix + "/users");
+		POST_URL.add(prefix + "/logout");
+		PATCH_URL.add(prefix + "/users");
+		DELETE_URL.add(prefix + "/mock");
+		ADMIN_URL.add("/admin/**");
+	}
 
 	@Bean
 	public List<AntPathRequestMatcher> matcher() {
@@ -25,48 +36,33 @@ public class MatcherConfig {
 			.map(AntPathRequestMatcher::new)
 			.collect(Collectors.toList());
 
-		result.addAll(GET_URL.stream()
-			.map((pattern) -> new AntPathRequestMatcher(pattern, HttpMethod.GET.name()))
-			.collect(Collectors.toList()));
-
-		result.addAll(POST_URL.stream()
-			.map((pattern) -> new AntPathRequestMatcher(pattern, HttpMethod.POST.name()))
-			.collect(Collectors.toList()));
-
-		result.addAll(PATCH_URL.stream()
-			.map((pattern) -> new AntPathRequestMatcher(pattern, HttpMethod.PATCH.name()))
-			.collect(Collectors.toList()));
-
-		result.addAll(DELETE_URL.stream()
-			.map((pattern) -> new AntPathRequestMatcher(pattern, HttpMethod.DELETE.name()))
-			.collect(Collectors.toList()));
-
-		result.addAll(ADMIN_URL.stream()
-			.map(AntPathRequestMatcher::new)
-			.collect(Collectors.toList()));
+		GET_URL.forEach(pattern -> result.add(new AntPathRequestMatcher(pattern, GET.name())));
+		POST_URL.forEach(pattern -> result.add(new AntPathRequestMatcher(pattern, POST.name())));
+		PATCH_URL.forEach(pattern -> result.add(new AntPathRequestMatcher(pattern, PATCH.name())));
+		DELETE_URL.forEach(pattern -> result.add(new AntPathRequestMatcher(pattern, DELETE.name())));
+		ADMIN_URL.forEach(pattern -> result.add(new AntPathRequestMatcher(pattern)));
 
 		return result;
 	}
 
 
-	public static List<String> AuthURLs() {
+	public static List<String> authURLs() {
 		return ALL_URL;
 	}
 
-	public static List<String> GetURLs() {
+	public static List<String> getURLs() {
 		return GET_URL;
 	}
 
-	public static List<String> PostURLs() {
+	public static List<String> postURLs() {
 		return POST_URL;
 	}
 
-	public static List<String> PatchURLs() {
+	public static List<String> patchURLs() {
 		return PATCH_URL;
 	}
 
-	public static List<String> DeleteURLs() {
-
+	public static List<String> deleteURLs() {
 		return DELETE_URL;
 	}
 

@@ -1,17 +1,20 @@
 package com.glimps.glimpsserver.review.dto;
 
-import com.glimps.glimpsserver.review.domain.Review;
-import com.glimps.glimpsserver.review.domain.ReviewPhoto;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Page;
+
+import com.glimps.glimpsserver.review.domain.Review;
+import com.glimps.glimpsserver.review.domain.ReviewPhoto;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.domain.Page;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -54,7 +57,6 @@ public class ReviewPageResponse {
 				.map(ReviewPhoto::getUrl)
 				.collect(Collectors.toList()))
 			.perfumeName(review.getPerfume().getPerfumeName())
-			// TODO N+1 문제 발생 가능, FETCH JOIN 필요
 			.perfumeBrandKor(review.getPerfume().getBrand().getBrandNameKor())
 			.perfumeBrandEng(review.getPerfume().getBrand().getBrandNameEng())
 			.overallRating(review.getOverallRatings())

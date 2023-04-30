@@ -26,11 +26,9 @@ class ReviewResponseTest {
 	private static final String TEST_PHOTO_URL3 = "testPhotoUrl3";
 
 	private static final Perfume PERFUME = Perfume.builder()
-		.id(1L)
 		.brand(TEST_BRAND)
 		.perfumeName(TEST_PERFUME_NAME)
 		.build();
-
 	private static final User USER = User.builder()
 		.id(1L)
 		.reviewCnt(0)

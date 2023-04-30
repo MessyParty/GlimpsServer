@@ -1,11 +1,13 @@
 package com.glimps.glimpsserver.session.application;
 
-import com.glimps.glimpsserver.common.jwt.JwtDto;
-import com.glimps.glimpsserver.common.jwt.JwtUtil;
-import com.glimps.glimpsserver.user.application.UserService;
-import com.glimps.glimpsserver.user.domain.RoleType;
-import com.glimps.glimpsserver.user.domain.User;
-import com.glimps.glimpsserver.user.domain.UserType;
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.BDDMockito.*;
+
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Optional;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,13 +17,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.BDDMockito.*;
+import com.glimps.glimpsserver.common.jwt.JwtDto;
+import com.glimps.glimpsserver.common.jwt.JwtUtil;
+import com.glimps.glimpsserver.user.application.UserService;
+import com.glimps.glimpsserver.user.domain.RoleType;
+import com.glimps.glimpsserver.user.domain.User;
+import com.glimps.glimpsserver.user.domain.UserType;
 
 @ExtendWith(MockitoExtension.class)
 class AuthenticationServiceTest {

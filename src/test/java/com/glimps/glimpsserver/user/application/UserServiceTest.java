@@ -60,7 +60,7 @@ class UserServiceTest {
 
 	@Test
 	@DisplayName("회원가입 중 이메일 중복 => 예외 발생")
-	void validateDuplicationWhenSignUp() {
+	void given_Duplication_When_SignUp_Then_Error() {
 		//given
 		given(userRepository.findByEmail(EMAIL)).willReturn(Optional.of(EXIST_USER));
 		given(signUpRequest.getEmail()).willReturn(EMAIL);

@@ -9,8 +9,14 @@ import org.springframework.stereotype.Component;
 
 import com.glimps.glimpsserver.common.oauth.dto.OAuthUserVo;
 import com.glimps.glimpsserver.perfume.domain.Brand;
+import com.glimps.glimpsserver.perfume.domain.Note;
 import com.glimps.glimpsserver.perfume.domain.Perfume;
+import com.glimps.glimpsserver.perfume.domain.PerfumeNote;
+import com.glimps.glimpsserver.perfume.domain.PerfumePhoto;
+import com.glimps.glimpsserver.perfume.dto.CreateNoteRequest;
 import com.glimps.glimpsserver.perfume.infra.BrandRepository;
+import com.glimps.glimpsserver.perfume.infra.NoteRepository;
+import com.glimps.glimpsserver.perfume.infra.PerfumeNoteRepository;
 import com.glimps.glimpsserver.perfume.infra.PerfumeRepository;
 import com.glimps.glimpsserver.review.domain.Review;
 import com.glimps.glimpsserver.review.dto.ReviewCreateRequest;
@@ -31,6 +37,8 @@ public class DevelopmentEnvMaker {
 	private final PerfumeRepository perfumeRepository;
 	private final BrandRepository brandRepository;
 	private final ReviewRepository reviewRepository;
+	private final NoteRepository noteRepository;
+	private final PerfumeNoteRepository perfumeNoteRepository;
 
 
 	@PostConstruct
@@ -44,16 +52,43 @@ public class DevelopmentEnvMaker {
 		Brand ck = Brand.createBrand("CK","캘빈클라인");
 		brandRepository.saveAll(List.of(brand, ck));
 
-		Perfume perfume1 = Perfume.createPerfume(brand, "NO.5");
+		PerfumePhoto photo1 = PerfumePhoto.builder()
+			.url("https://picsum.photos/200/300")
+			.orderNum(0)
+			.build();
 
-		perfumeRepository.save(perfume1);
+		PerfumePhoto photo2 = PerfumePhoto.builder()
+			.url("https://picsum.photos/200/300")
+			.orderNum(0)
+			.build();
 
-		Perfume perfume2 = Perfume.createPerfume(ck, "One");
-		perfumeRepository.save(perfume2);
+		Perfume no5 = Perfume.createPerfume(brand, "NO.5");
+		no5.updateRatings(5, 4.5, 4, 3);
+		no5.addPhoto(photo1);
+		perfumeRepository.save(no5);
+
+		Perfume one = Perfume.createPerfume(ck, "ONE");
+		one.updateRatings(4.5,4.2, 3, 1);
+		one.addPhoto(photo2);
+		perfumeRepository.save(one);
+
+		Note suede = Note.createNote(new CreateNoteRequest("SUEDE", "스웨이드"));
+		Note white = Note.createNote(new CreateNoteRequest("WHITE TEA", "화이트 티"));
+		Note fig = Note.createNote(new CreateNoteRequest("FIG", "무화과"));
+
+		noteRepository.saveAll(List.of(suede, white, fig));
+
+		PerfumeNote no5Suede = PerfumeNote.mapNoteToPerfume(no5, suede);
+		PerfumeNote no5White = PerfumeNote.mapNoteToPerfume(no5, white);
+
+		PerfumeNote oneWhite = PerfumeNote.mapNoteToPerfume(one, white);
+		PerfumeNote oneFig = PerfumeNote.mapNoteToPerfume(one, fig);
+
+		perfumeNoteRepository.saveAll(List.of(no5White, no5Suede, oneWhite, oneFig));
 
 		ReviewCreateRequest channelRequest =
 			ReviewCreateRequest.builder()
-				.perfumeUuid(perfume1.getUuid())
+				.perfumeUuid(no5.getUuid())
 				.title("샤넬 향수 정말 좋아요")
 				.body("샤넬 향수 본문")
 				.overallRatings(5)
@@ -63,7 +98,7 @@ public class DevelopmentEnvMaker {
 
 		ReviewCreateRequest ckRequest =
 			ReviewCreateRequest.builder()
-				.perfumeUuid(perfume2.getUuid())
+				.perfumeUuid(one.getUuid())
 				.title("ck 향수 정말 좋아요")
 				.body("ck 향수 본문")
 				.overallRatings(5)
@@ -71,9 +106,11 @@ public class DevelopmentEnvMaker {
 				.sillageRatings(2)
 				.build();
 
-		Review review1 = Review.createReview(channelRequest, user1, perfume1);
-		Review review2 = Review.createReview(ckRequest, user2, perfume2);
+		Review review1 = Review.createReview(channelRequest, user1, no5);
+		Review review2 = Review.createReview(ckRequest, user2, one);
+
 		reviewRepository.saveAll(List.of(review1, review2));
+
 	}
 
 	private User getUser(String name, String email, RoleType role) {

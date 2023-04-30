@@ -20,8 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.glimps.glimpsserver.common.config.SecurityConfig;
-import com.glimps.glimpsserver.session.dto.UserInfoDto;
 import com.glimps.glimpsserver.config.WithMockCustomUser;
+import com.glimps.glimpsserver.session.dto.UserInfoDto;
 import com.glimps.glimpsserver.user.application.UserInfoService;
 import com.glimps.glimpsserver.user.domain.RoleType;
 import com.glimps.glimpsserver.user.domain.UserType;
