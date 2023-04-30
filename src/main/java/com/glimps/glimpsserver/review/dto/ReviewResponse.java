@@ -31,6 +31,7 @@ public class ReviewResponse {
 	private double overallRatings;
 	private double longevityRatings;
 	private double sillageRatings;
+	private double scentRatings;
 
 	private LocalDateTime createdAt;
 
@@ -50,6 +51,7 @@ public class ReviewResponse {
 			.overallRatings(review.getOverallRatings())
 			.longevityRatings(review.getLongevityRatings())
 			.sillageRatings(review.getSillageRatings())
+			.scentRatings(review.getScentRatings())
 			.createdAt(review.getCreatedAt())
 			.build();
 	}

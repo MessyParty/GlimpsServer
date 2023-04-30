@@ -52,6 +52,12 @@ public class ReviewCreateRequest{
 	@Max(value = 5)
 	private double sillageRatings;
 
+	@ApiModelProperty(value = "향수에 대한 본연의 향 점수 (0~5)", required = true, example = "5")
+	@Positive
+	@Min(value = 0)
+	@Max(value = 5)
+	private double scentRatings;
+
 	@ApiModelProperty(value = "향수 UUID", required = true, example = "5")
 	@NotNull
 	private UUID perfumeUuid;

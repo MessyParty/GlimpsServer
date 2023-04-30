@@ -51,6 +51,12 @@ public class ReviewUpdateRequest {
 	@Max(value = 5)
 	private Double sillageRatings;
 
+	@ApiModelProperty(value = "향수에 대한 본연의 향 점수 (0~5)", example = "5")
+	@Positive
+	@Min(value = 0)
+	@Max(value = 5)
+	private Double scentRatings;
+
 	@ApiModelProperty(value = "사진 Url", example = "[\"https://s3.ap-northeast-2.amazonaws.com/glimps/5e7f1b0c-7f1b-4b0c-8f1b-0c7f1b4b0c7f.jpg\"]")
 	@Builder.Default
 	@NotNull

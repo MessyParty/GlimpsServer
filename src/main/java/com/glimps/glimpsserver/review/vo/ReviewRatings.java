@@ -14,4 +14,6 @@ public class ReviewRatings {
 	private double longevityRatings;
 	@Positive
 	private double sillageRatings;
+	@Positive
+	private double scentRatings;
 }
