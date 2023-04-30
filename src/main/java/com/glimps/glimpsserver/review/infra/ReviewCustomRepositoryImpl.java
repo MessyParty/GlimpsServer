@@ -112,7 +112,23 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
 			.collect(Collectors.toList());
 	}
 
-	private OrderSpecifier<?> getSort(Pageable pageRequest) {
+  @Override
+  public List<Review> findBestReviewByPerfumeId(UUID perfumeUuid) {
+    return jpaQueryFactory.selectFrom(review)
+				.innerJoin(user).fetchJoin()
+				.on(user.id.eq(review.user.id))
+				.innerJoin(perfume).fetchJoin()
+				.on(perfume.id.eq(review.perfume.id))
+				.leftJoin(reviewPhoto).fetchJoin()
+				.on(reviewPhoto.review.id.eq(review.id))
+				.orderBy(review.heartsCnt.desc())
+				.where(perfume.uuid.eq(perfumeUuid))
+				.limit(1)
+				.stream()
+				.collect(Collectors.toList());
+  }
+
+  private OrderSpecifier<?> getSort(Pageable pageRequest) {
 		for (Sort.Order order : pageRequest.getSort()) {
 			Order direction = order.isAscending() ? Order.ASC : Order.DESC;
 			switch (order.getProperty()) {

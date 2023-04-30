@@ -151,4 +151,8 @@ public class ReviewService {
 		reviewRepository.delete(review);
 		return review;
 	}
+
+	public List<Review> getPerfumeBestReviews(UUID perfumeUuid) {
+		return reviewCustomRepository.findBestReviewByPerfumeId(perfumeUuid);
+	}
 }
