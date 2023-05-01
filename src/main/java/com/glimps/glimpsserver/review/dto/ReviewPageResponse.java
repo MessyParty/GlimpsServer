@@ -32,6 +32,7 @@ public class ReviewPageResponse {
 	private double overallRating;
 	private double longevityRating;
 	private double sillageRating;
+	private double scentRating;
 	private int heartsCnt;
 	private long totalElements;
 	private long totalPages;
@@ -62,6 +63,7 @@ public class ReviewPageResponse {
 			.overallRating(review.getOverallRatings())
 			.longevityRating(review.getLongevityRatings())
 			.sillageRating(review.getSillageRatings())
+			.scentRating(review.getScentRatings())
 			.heartsCnt(review.getHeartsCnt())
 			.totalElements(totalElements)
 			.totalPages(totalPages)
