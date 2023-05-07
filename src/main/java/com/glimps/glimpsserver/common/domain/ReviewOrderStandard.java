@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ReviewOrderStandard {
-	DATE("createdAt"), HEARTS_COUNT("heartCnt");
+	DATE("createdAt"), HEARTS_COUNT("heartsCnt");
 
 	private final String property;
 
