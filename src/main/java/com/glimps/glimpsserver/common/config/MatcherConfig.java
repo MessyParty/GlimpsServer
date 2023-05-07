@@ -23,9 +23,18 @@ public class MatcherConfig {
 	public MatcherConfig(@Value("${api.prefix}") String prefix) {
 		ALL_URL.add("/test");
 		GET_URL.add(prefix + "/users");
+		GET_URL.add(prefix + "/reviews/myReviews");
+
 		POST_URL.add(prefix + "/logout");
+		POST_URL.add(prefix + "/reviews");
+		POST_URL.add(prefix + "/reviews/*/heart");
+
 		PATCH_URL.add(prefix + "/users");
+		PATCH_URL.add(prefix + "/reviews/*");
+
 		DELETE_URL.add(prefix + "/mock");
+		DELETE_URL.add(prefix + "/reviews/*/heart");
+		DELETE_URL.add(prefix + "/reviews/*");
 		ADMIN_URL.add("/admin/**");
 	}
 
