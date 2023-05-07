@@ -49,7 +49,7 @@ public class SwaggerConfig {
 		return new ApiInfoBuilder()
 			.title("Glims API 문서")
 			.description("API 스펙에 대해서 설명해주는 문서입니다.")
-			.version("0.9.1")
+			.version("0.9.2")
 			.build();
 	}
 
