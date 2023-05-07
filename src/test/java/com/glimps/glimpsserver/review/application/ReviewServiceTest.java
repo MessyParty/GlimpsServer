@@ -3,6 +3,7 @@ package com.glimps.glimpsserver.review.application;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
+import com.glimps.glimpsserver.common.domain.ReviewOrderStandard;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -252,8 +253,8 @@ class ReviewServiceTest {
 	@Nested
 	@DisplayName("getMyReviews 메소드는")
 	class Describe_getMyReviews {
-		private final ReviewPageParam reviewPageParam = new ReviewPageParam(0, 2, null, null);
-		private final Pageable pageable = PageRequest.of(0, 2, Sort.Direction.DESC, "createdAt");
+		private final ReviewPageParam reviewPageParam = new ReviewPageParam(0, 2, ReviewOrderStandard.HEARTS_COUNT, null);
+		private final Pageable pageable = PageRequest.of(0, 2, Sort.Direction.DESC, "heartsCnt");
 		private final UUID ELEMENT1_UUID = UUID.randomUUID();
 		private final UUID ELEMENT2_UUID = UUID.randomUUID();
 		private final UUID ELEMENT3_UUID = UUID.randomUUID();
@@ -264,6 +265,7 @@ class ReviewServiceTest {
 			.user(EXISTS_USER)
 			.title("element1 title")
 			.body("element1 body")
+			.heartsCnt(5)
 			.build();
 
 		Review element2 = Review.builder()
@@ -272,6 +274,7 @@ class ReviewServiceTest {
 			.user(EXISTS_USER)
 			.title("element2 title")
 			.body("element2 body")
+			.heartsCnt(8)
 			.build();
 
 		Review element3 = Review.builder()
@@ -280,6 +283,7 @@ class ReviewServiceTest {
 			.user(EXISTS_USER)
 			.title("element3 title")
 			.body("element3 body")
+			.heartsCnt(10)
 			.build();
 
 		@Nested

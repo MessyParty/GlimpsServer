@@ -2,6 +2,7 @@ package com.glimps.glimpsserver.review.infra;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.*;
 
+import com.glimps.glimpsserver.perfume.infra.BrandRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -96,6 +97,8 @@ class ReviewCustomRepositoryImplTest {
 	private UserRepository userRepository;
 	@Autowired
 	private PerfumeRepository perfumeRepository;
+	@Autowired
+	private BrandRepository brandRepository;
 
 	@Nested
 	@DisplayName("findByUuid 메서드는")
@@ -242,13 +245,14 @@ class ReviewCustomRepositoryImplTest {
 			@DisplayName("해당 유저의 리뷰를 반환한다.")
 			void It_returns_users_reviews() {
 				//given
+				brandRepository.save(TEST_BRAND);
 				perfumeRepository.save(EXISTS_PERFUME);
 				userRepository.save(EXISTS_USER);
 				reviewRepository.save(EXISTS_REVIEW);
 				reviewRepository.save(SECOND_REVIEW);
 
 				//when
-				Pageable pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "createdAt");
+				Pageable pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "heartsCnt");
 				Page<Review> reviews = reviewCustomRepository.findAllByUserId(EXISTS_USER.getId(), pageRequest);
 
 				//then

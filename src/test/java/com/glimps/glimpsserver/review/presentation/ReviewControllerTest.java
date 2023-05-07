@@ -451,6 +451,24 @@ class ReviewControllerTest {
 					.andExpect(status().isOk())
 					.andDo(print());
 			}
+
+			@Test
+			@DisplayName("상태코드 200과 리뷰를 페이지로 나누어 반환한다.")
+			void It_responds_200_and_reviews_by_pagination_by_hearts_cnt() throws Exception {
+				mvc.perform(get(contextPath + "/reviews/myReviews")
+								.param("offset", "0")
+								.param("limit", "3")
+								.param("orderStandard", "HEARTS_COUNT")
+								.param("sortType", "DESC")
+								.accept(MediaType.APPLICATION_JSON_UTF8)
+								.contentType(MediaType.APPLICATION_JSON_UTF8)
+						)
+						.andExpect(content().string(containsString("10")))
+						.andExpect(content().string(containsString("7")))
+						.andExpect(content().string(containsString("5")))
+						.andExpect(status().isOk())
+						.andDo(print());
+			}
 		}
 
 		@Nested
