@@ -665,6 +665,7 @@ class ReviewControllerTest {
 			.overallRatings(5)
 			.longevityRatings(3)
 			.sillageRatings(3)
+			.scentRatings(3)
 			.perfumeUuid(EXISTS_PERFUME_UUID)
 			.build();
 
