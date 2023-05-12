@@ -32,7 +32,7 @@ public class ReviewHeartService {
 	@Transactional
 	public ReviewHeart cancelReviewHeart(Review review, User user) {
 		ReviewHeart reviewHeart = reviewHeartCustomRepository.findByReviewAndUser(review.getUuid(), user.getId())
-			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.REVIEW_HEART_NOT_FOUND, review.getUuid()));
+			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.REVIEW_HEART_NOT_FOUND));
 		reviewHeart.cancelReviewHeart();
 		reviewHeartRepository.delete(reviewHeart);
 		return reviewHeart;

@@ -29,7 +29,7 @@ class ReviewTest {
 		.role(RoleType.USER)
 		.build();
 
-	private static final Perfume perfume = Perfume.createPerfume(TEST_BRAND, "No.5");
+	private static final Perfume perfume = Perfume.createPerfume(TEST_BRAND, "No.5", "테스트");
 
 	@Test
 	void createReview() {
