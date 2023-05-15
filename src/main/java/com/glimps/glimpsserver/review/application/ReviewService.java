@@ -114,7 +114,7 @@ public class ReviewService {
 
 	private Review findReview(UUID uuid) {
 		return reviewCustomRepository.findByUuid(uuid)
-				.orElseThrow(() -> new EntityNotFoundException(ErrorCode.REVIEW_NOT_FOUND, uuid));
+				.orElseThrow(() -> new EntityNotFoundException(ErrorCode.REVIEW_NOT_FOUND));
 	}
 
 	public Review updateReview(UUID uuid, ReviewUpdateRequest reviewUpdateRequest, String email) {

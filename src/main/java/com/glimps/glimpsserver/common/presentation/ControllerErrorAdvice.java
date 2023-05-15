@@ -47,14 +47,13 @@ public class ControllerErrorAdvice {
 
 	/**
 	 * Entity 를 DB로부터 못찾을 경우 발생하는 에러 처리
-	 * TODO 어떤 Entity 인지 나타내도록 코드 수정 필요
 	 */
 	@ExceptionHandler(EntityNotFoundException.class)
 	public ResponseEntity<ErrorResponse> handleEntityNotFoundException(EntityNotFoundException e) {
 		// 로그에는 ID, EMAIL 전부 노출, 반환값으로는 EMAIL만 노출
-		log.error("Exception occurs: {}, Id: {}, Email: {}", e.getMessage(), e.getId(), e.getEmail());
+		log.error("Exception occurs: {}", e.getMessage());
 		ErrorResponse errorResponse = ErrorResponse.of(e.getErrorCode().getCode(),
-			e.getMessage() + " Email: " + e.getEmail());
+			e.getMessage());
 		return ResponseEntity.status(e.getErrorCode().getStatus()).body(errorResponse);
 	}
 

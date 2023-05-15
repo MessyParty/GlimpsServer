@@ -101,7 +101,7 @@ class PerfumeControllerTest {
 	void given_InvalidUUID_When_GetPerfume_Then_404Fail() throws Exception {
 		//given
 		given(perfumeService.getPerfumeWithNotesAndBrand(NOT_EXIST_UUID)).willThrow(new EntityNotFoundException(
-			ErrorCode.PERFUME_NOT_FOUND, NOT_EXIST_UUID));
+			ErrorCode.PERFUME_NOT_FOUND));
 
 		//when
 		mockMvc.perform(get("/perfumes/" + NOT_EXIST_UUID))

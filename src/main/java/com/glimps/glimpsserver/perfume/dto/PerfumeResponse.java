@@ -27,7 +27,7 @@ public class PerfumeResponse {
 	private String brandNameKor;
 
 	private String perfumeName;
-
+	private String introduction;
 	private double overallRatings;
 	private double scentRatings;
 	private double longevityRatings;
@@ -37,6 +37,10 @@ public class PerfumeResponse {
 	private List<NoteResponse> notes = new ArrayList<>();
 	private List<PerfumePhotoResponse> photos = new ArrayList<>();
 
+	public static PerfumeResponse of(Perfume perfume) {
+		return PerfumeResponse.of(perfume, new ArrayList<>());
+	}
+
 	public static PerfumeResponse of(Perfume perfume, List<Note> notes) {
 		return PerfumeResponse.builder()
 			.uuid(perfume.getUuid())
@@ -44,6 +48,7 @@ public class PerfumeResponse {
 			.brandName(perfume.getBrand().getBrandNameEng())
 			.brandNameKor(perfume.getBrand().getBrandNameKor())
 			.perfumeName(perfume.getPerfumeName())
+			.introduction(perfume.getIntroduction())
 			.overallRatings(perfume.getOverallRatings())
 			.scentRatings(perfume.getScentRatings())
 			.longevityRatings(perfume.getLongevityRatings())
@@ -54,21 +59,7 @@ public class PerfumeResponse {
 			.build();
 	}
 
-	public static PerfumeResponse of(Perfume perfume) {
-		return PerfumeResponse.builder()
-			.uuid(perfume.getUuid())
-			.brandId(perfume.getBrand().getId())
-			.brandName(perfume.getBrand().getBrandNameEng())
-			.brandNameKor(perfume.getBrand().getBrandNameKor())
-			.perfumeName(perfume.getPerfumeName())
-			.overallRatings(perfume.getOverallRatings())
-			.scentRatings(perfume.getScentRatings())
-			.longevityRatings(perfume.getLongevityRatings())
-			.sillageRatings(perfume.getSillageRatings())
-			.reviewCnt(perfume.getReviewCnt())
-			.photos(perfume.getPerfumePhotos().stream().map(PerfumePhotoResponse::of).collect(Collectors.toList()))
-			.build();
-	}
+
 
 	@QueryProjection
 	public PerfumeResponse(Perfume perfume, Brand brand, List<Note> notes, List<PerfumePhoto> photos) {
@@ -77,6 +68,7 @@ public class PerfumeResponse {
 		this.brandName = brand.getBrandNameEng();
 		this.brandNameKor = brand.getBrandNameKor();
 		this.perfumeName = perfume.getPerfumeName();
+		this.introduction = perfume.getIntroduction();
 		this.overallRatings = perfume.getOverallRatings();
 		this.scentRatings = perfume.getScentRatings();
 		this.longevityRatings = perfume.getLongevityRatings();

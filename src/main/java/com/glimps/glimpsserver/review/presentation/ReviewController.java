@@ -42,7 +42,6 @@ public class ReviewController {
 	@ApiOperation(value = "리뷰 생성", notes = "리뷰를 생성합니다. (권한: ROLE_USER)")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	@PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
 	public ReviewResponse create(@RequestBody @Valid ReviewCreateRequest reviewCreateRequest,
 			UserAuthentication userAuthentication) {
 		String email = userAuthentication.getEmail();

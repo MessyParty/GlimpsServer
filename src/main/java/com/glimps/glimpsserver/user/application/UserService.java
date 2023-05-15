@@ -32,7 +32,7 @@ public class UserService {
 
 	public User getUserByEmail(String email) {
 		return userRepository.findByEmail(email)
-			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.USER_NOT_FOUND, email));
+			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.USER_NOT_FOUND));
 	}
 
 	public Optional<User> getOptionalUserByEmail(String email) {
@@ -45,7 +45,7 @@ public class UserService {
 		validateDuplicateUser(user);
 		User savedUser = userRepository.save(user);
 
-		log.info("The new user registered email={}	role={}	provider={}", savedUser.getEmail(),
+		log.info("The new user registered email={}\trole={}\tprovider={}", savedUser.getEmail(),
 			savedUser.getRole(),
 			savedUser.getUserType());
 
@@ -65,12 +65,12 @@ public class UserService {
 
 	public User getByEmail(String email) {
 		return userRepository.findByEmail(email)
-			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.USER_NOT_FOUND, null, email));
+			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.USER_NOT_FOUND));
 	}
 
 	public User getById(Long id) {
 		return userRepository.findById(id)
-			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.USER_NOT_FOUND, id, "UNKNOWN"));
+			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.USER_NOT_FOUND));
 	}
 
 	@Transactional
