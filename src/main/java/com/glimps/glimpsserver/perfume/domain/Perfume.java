@@ -44,12 +44,14 @@ public class Perfume {
 
 	private String perfumeName;
 
+	private String introduction;
 	private double overallRatings;
 	private double longevityRatings;
 	private double sillageRatings;
 	private double scentRatings;
 
 	private int reviewCnt;
+
 
 	@OneToMany(mappedBy = "perfume", cascade = CascadeType.PERSIST, orphanRemoval = true)
 	private List<PerfumeNote> perfumeNotes = new ArrayList<>();
@@ -58,7 +60,7 @@ public class Perfume {
 	private List<PerfumePhoto> perfumePhotos = new ArrayList<>();
 
 	@Builder
-	public Perfume(UUID uuid, Brand brand, String perfumeName, double overallRatings, double scentRatings,
+	public Perfume(UUID uuid, Brand brand, String perfumeName, String introduction, double overallRatings, double scentRatings,
 		double longevityRatings, double sillageRatings, int reviewCnt) {
 		this.uuid = uuid;
 		this.brand = brand;
@@ -68,13 +70,15 @@ public class Perfume {
 		this.sillageRatings = sillageRatings;
 		this.reviewCnt = reviewCnt;
 		this.scentRatings = scentRatings;
+		this.introduction = introduction;
 	}
 
-	public static Perfume createPerfume(Brand brand, String perfumeName) {
+	public static Perfume createPerfume(Brand brand, String perfumeName, String introduction) {
 		return Perfume.builder()
 			.uuid(UUID.randomUUID())
 			.brand(brand)
 			.perfumeName(perfumeName)
+			.introduction(introduction)
 			.overallRatings(0)
 			.scentRatings(0)
 			.longevityRatings(0)

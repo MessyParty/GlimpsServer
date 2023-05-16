@@ -64,12 +64,12 @@ public class PerfumeService {
 
 	private Perfume findPerfume(UUID perfumeUuid) {
 		return perfumeRepository.findByUuid(perfumeUuid)
-			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.PERFUME_NOT_FOUND, perfumeUuid));
+			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.PERFUME_NOT_FOUND));
 	}
 
 	private Perfume findPerfumeWithEntities(UUID perfumeUuid) {
 		return perfumeRepository.findPerfumeWithEntities(perfumeUuid)
-			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.PERFUME_NOT_FOUND, perfumeUuid));
+			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.PERFUME_NOT_FOUND));
 	}
 
 	public List<PerfumeResponse> getAll() {

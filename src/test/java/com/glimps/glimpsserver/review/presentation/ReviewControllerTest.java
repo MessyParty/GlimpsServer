@@ -236,7 +236,7 @@ class ReviewControllerTest {
 			@BeforeEach
 			void setUp() {
 				given(reviewService.getReviewById(any())).willThrow(new EntityNotFoundException(
-					ErrorCode.REVIEW_NOT_FOUND, NOT_EXISTS_REVIEW_UUID));
+					ErrorCode.REVIEW_NOT_FOUND));
 			}
 
 			@Test
@@ -351,7 +351,7 @@ class ReviewControllerTest {
 			@BeforeEach
 			void setUp() {
 				given(reviewService.getPerfumeReviews(NOT_EXISTS_PERFUME_UUID)).willThrow(new EntityNotFoundException(
-					ErrorCode.PERFUME_NOT_FOUND, NOT_EXISTS_PERFUME_UUID));
+					ErrorCode.PERFUME_NOT_FOUND));
 			}
 
 			@Test
@@ -506,7 +506,7 @@ class ReviewControllerTest {
 			@BeforeEach
 			void setUp() {
 				given(reviewService.getMyReviews(any(ReviewPageParam.class), eq(NOT_EXISTS_EMAIL)))
-					.willThrow(new EntityNotFoundException(ErrorCode.USER_NOT_FOUND, NOT_EXISTS_EMAIL));
+					.willThrow(new EntityNotFoundException(ErrorCode.USER_NOT_FOUND));
 			}
 
 			@Test
@@ -574,7 +574,7 @@ class ReviewControllerTest {
 			@BeforeEach
 			void setUp() {
 				given(reviewService.createHeart(eq(NOT_EXISTS_REVIEW_UUID), any())).willThrow(
-					new EntityNotFoundException(ErrorCode.REVIEW_NOT_FOUND, EXISTS_REVIEW_UUID)
+					new EntityNotFoundException(ErrorCode.REVIEW_NOT_FOUND)
 				);
 			}
 
@@ -595,7 +595,7 @@ class ReviewControllerTest {
 			@BeforeEach
 			void setUp() {
 				given(reviewService.createHeart(any(), eq(NOT_EXISTS_EMAIL)))
-					.willThrow(new EntityNotFoundException(ErrorCode.USER_NOT_FOUND, NOT_EXISTS_EMAIL));
+					.willThrow(new EntityNotFoundException(ErrorCode.USER_NOT_FOUND));
 			}
 
 			@Test
@@ -638,7 +638,7 @@ class ReviewControllerTest {
 			@BeforeEach
 			void setUp() {
 				given(reviewService.cancelHeart(eq(NOT_EXISTS_REVIEW_UUID), any())).willThrow(
-					new EntityNotFoundException(ErrorCode.REVIEW_NOT_FOUND, EXISTS_REVIEW_UUID)
+					new EntityNotFoundException(ErrorCode.REVIEW_NOT_FOUND)
 				);
 			}
 
@@ -659,7 +659,7 @@ class ReviewControllerTest {
 			@BeforeEach
 			void setUp() {
 				given(reviewService.cancelHeart(any(), eq(NOT_EXISTS_EMAIL)))
-					.willThrow(new EntityNotFoundException(ErrorCode.USER_NOT_FOUND, NOT_EXISTS_EMAIL));
+					.willThrow(new EntityNotFoundException(ErrorCode.USER_NOT_FOUND));
 			}
 
 			@Test
@@ -767,7 +767,7 @@ class ReviewControllerTest {
 			@BeforeEach
 			void setUp() {
 				given(reviewService.createReview(any(), any())).willThrow(
-					new EntityNotFoundException(ErrorCode.USER_NOT_FOUND, NOT_EXISTS_EMAIL)
+					new EntityNotFoundException(ErrorCode.USER_NOT_FOUND)
 				);
 			}
 
@@ -860,7 +860,7 @@ class ReviewControllerTest {
 			@BeforeEach
 			void setUp() {
 				given(reviewService.updateReview(any(), any(ReviewUpdateRequest.class), any())).willThrow(
-					new EntityNotFoundException(ErrorCode.REVIEW_NOT_FOUND, NOT_EXISTS_REVIEW_UUID)
+					new EntityNotFoundException(ErrorCode.REVIEW_NOT_FOUND)
 				);
 			}
 
@@ -894,7 +894,7 @@ class ReviewControllerTest {
 			void setUp() {
 				given(
 					reviewService.updateReview(any(), any(ReviewUpdateRequest.class), eq(NOT_EXISTS_EMAIL))).willThrow(
-					new EntityNotFoundException(ErrorCode.USER_NOT_FOUND, NOT_EXISTS_EMAIL)
+					new EntityNotFoundException(ErrorCode.USER_NOT_FOUND)
 				);
 			}
 
@@ -944,7 +944,7 @@ class ReviewControllerTest {
 			@BeforeEach
 			void setUp() {
 				given(reviewService.deleteReview(any(), any())).willThrow(
-					new EntityNotFoundException(ErrorCode.REVIEW_NOT_FOUND, NOT_EXISTS_REVIEW_UUID)
+					new EntityNotFoundException(ErrorCode.REVIEW_NOT_FOUND)
 				);
 			}
 
@@ -968,7 +968,7 @@ class ReviewControllerTest {
 			@BeforeEach
 			void setUp() {
 				given(reviewService.deleteReview(any(), eq(NOT_EXISTS_EMAIL))).willThrow(
-					new EntityNotFoundException(ErrorCode.USER_NOT_FOUND, NOT_EXISTS_EMAIL)
+					new EntityNotFoundException(ErrorCode.USER_NOT_FOUND)
 				);
 			}
 
