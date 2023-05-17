@@ -41,7 +41,7 @@ public class DevelopmentEnvMaker {
 	private final PerfumeNoteRepository perfumeNoteRepository;
 
 
-	@PostConstruct
+	// @PostConstruct
 	private void initDB() {
 		User user1 = getUser("이준표", "wnsvy607@naver.com", RoleType.USER);
 		User user2 = getUser("강시후", "gyeong0308@gmail.com", RoleType.USER);
