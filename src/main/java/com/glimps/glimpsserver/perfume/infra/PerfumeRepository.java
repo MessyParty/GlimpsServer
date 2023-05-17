@@ -17,9 +17,9 @@ public interface PerfumeRepository extends JpaRepository<Perfume, Long> {
 	Optional<Perfume> findByUuid(UUID uuid);
 
 	@Query("select p from Perfume p "
-		+ "join fetch p.brand b "
-		+ "join fetch p.perfumeNotes pn "
-		+ "join fetch pn.note "
+		+ "left join fetch p.brand b "
+		+ "left join fetch p.perfumeNotes pn "
+		+ "left join fetch pn.note "
 		+ "where p.uuid = :uuid")
 	Optional<Perfume> findPerfumeWithEntities(UUID uuid);
 
