@@ -39,8 +39,6 @@ public class PerfumeCustomRepositoryImpl implements PerfumeCustomRepository {
 		List<Perfume> content = queryFactory.selectFrom(perfume)
 			.leftJoin(perfume.brand, brand)
 			.fetchJoin()
-			.leftJoin(perfume.perfumePhotos, perfumePhoto)
-			.fetchJoin()
 			.where(brandLike(brandName))
 			.offset(pageable.getOffset())
 			.limit((long)pageable.getPageSize() + 1)
