@@ -24,7 +24,6 @@ import com.glimps.glimpsserver.review.application.ReviewService;
 import com.glimps.glimpsserver.review.domain.Review;
 import com.glimps.glimpsserver.review.dto.ReviewCreateRequest;
 import com.glimps.glimpsserver.review.dto.ReviewPageParam;
-import com.glimps.glimpsserver.review.dto.ReviewPageResponse;
 import com.glimps.glimpsserver.review.dto.ReviewResponse;
 import com.glimps.glimpsserver.review.dto.ReviewUpdateRequest;
 
@@ -66,10 +65,10 @@ public class ReviewController {
 	})
 	@GetMapping("/myReviews")
 	@PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
-	public List<ReviewPageResponse> myReviews(ReviewPageParam reviewPageParam, UserAuthentication userAuthentication) {
+	public Page<ReviewResponse> myReviews(ReviewPageParam reviewPageParam, UserAuthentication userAuthentication) {
 		String email = userAuthentication.getEmail();
 		Page<Review> reviews = reviewService.getMyReviews(reviewPageParam, email);
-		return ReviewPageResponse.of(reviews);
+		return ReviewResponse.convert(reviews);
 	}
 
 	@ApiOperation(value = "최근 리뷰 조회", notes = "최근 리뷰를 조회합니다.")
@@ -88,9 +87,9 @@ public class ReviewController {
 	})
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public List<ReviewPageResponse> list(ReviewPageParam reviewPageParam) {
+	public Page<ReviewResponse> list(ReviewPageParam reviewPageParam) {
 		Page<Review> reviews = reviewService.getReviews(reviewPageParam);
-		return ReviewPageResponse.of(reviews);
+		return ReviewResponse.convert(reviews);
 	}
 
 	@ApiOperation(value = "좋아요 생성", notes = "리뷰에 좋아요를 생성합니다. (권한: ROLE_USER)")

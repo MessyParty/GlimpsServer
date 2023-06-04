@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+
 import com.glimps.glimpsserver.review.domain.Review;
 import com.glimps.glimpsserver.review.domain.ReviewPhoto;
 import com.google.common.collect.Lists;
@@ -62,5 +64,12 @@ public class ReviewResponse {
 		return reviews.stream()
 			.map(ReviewResponse::of)
 			.collect(Collectors.toList());
+	}
+
+	public static Page<ReviewResponse> convert(Page<Review> reviews) {
+		if (reviews.getContent().isEmpty()) {
+			return Page.empty();
+		}
+		return reviews.map(ReviewResponse::of);
 	}
 }
