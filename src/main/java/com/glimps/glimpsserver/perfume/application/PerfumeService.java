@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -84,8 +83,7 @@ public class PerfumeService {
 
 	public Slice<PerfumeResponse> getPerfumeByBrand(String brandName, Pageable pageable) {
 		Slice<Perfume> slice = perfumeCustomRepository.searchByBrand(brandName, pageable);
-		List<PerfumeResponse> content = slice.stream().map(PerfumeResponse::of).collect(Collectors.toList());
-		return new SliceImpl<>(content, slice.getPageable(), slice.hasNext());
+		return slice.map(PerfumeResponse::of);
 	}
 
 	public List<PerfumeResponse> getRandomPerfume(Integer amount) {
