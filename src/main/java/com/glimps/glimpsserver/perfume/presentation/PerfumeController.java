@@ -79,4 +79,14 @@ public class PerfumeController {
 		return perfumeService.getAll();
 	}
 
+	/**
+	 * 향수 노트 추가 API
+	 */
+	@Tag(name = "Test", description = "Test API")
+	@Operation(summary = "노트 추가 API", description = "노트 추가 API")
+	@GetMapping("/notes")
+	public PerfumeResponse addNote(@RequestParam UUID uuid, @RequestParam String eng, @RequestParam String kor) {
+		return perfumeService.addNote(uuid, eng.toUpperCase(), kor);
+	}
+
 }

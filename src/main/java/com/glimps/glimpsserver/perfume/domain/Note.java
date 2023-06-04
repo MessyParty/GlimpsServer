@@ -23,8 +23,8 @@ public class Note {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String EngName;
-    private String KorName;
+    private String engName;
+    private String korName;
 
     public static Note createNote(CreateNoteRequest createNoteRequest) {
         return Note.builder()
@@ -35,7 +35,7 @@ public class Note {
 
     @Builder
     public Note(String engName, String korName) {
-        EngName = engName;
-        KorName = korName;
+        this.engName = engName;
+        this.korName = korName;
     }
 }

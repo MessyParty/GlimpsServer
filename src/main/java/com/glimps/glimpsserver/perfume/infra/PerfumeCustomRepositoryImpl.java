@@ -109,9 +109,9 @@ public class PerfumeCustomRepositoryImpl implements PerfumeCustomRepository {
 		if (noteName == null)
 			return new BooleanBuilder();
 		else if (noteName.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*"))
-			return new BooleanBuilder(note.KorName.startsWith(noteName));
+			return new BooleanBuilder(note.korName.startsWith(noteName));
 
-		return new BooleanBuilder(note.EngName.startsWith(noteName.toUpperCase()));
+		return new BooleanBuilder(note.engName.startsWith(noteName.toUpperCase()));
 	}
 
 	private static <T> Slice<T> getSlice(Pageable pageable, List<T> content) {
