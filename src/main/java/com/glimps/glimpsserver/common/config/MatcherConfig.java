@@ -28,6 +28,7 @@ public class MatcherConfig {
 		POST_URL.add(prefix + "/logout");
 		POST_URL.add(prefix + "/reviews");
 		POST_URL.add(prefix + "/reviews/*/heart");
+		POST_URL.add(prefix + "/reviews/photos/*");
 
 		PATCH_URL.add(prefix + "/users");
 		PATCH_URL.add(prefix + "/reviews/*");

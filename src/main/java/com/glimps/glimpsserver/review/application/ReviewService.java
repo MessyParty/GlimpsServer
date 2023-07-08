@@ -117,6 +117,7 @@ public class ReviewService {
 				.orElseThrow(() -> new EntityNotFoundException(ErrorCode.REVIEW_NOT_FOUND));
 	}
 
+	@Transactional
 	public Review updateReview(UUID uuid, ReviewUpdateRequest reviewUpdateRequest, String email) {
 		Review review = findReview(uuid);
 		User user = userService.getUserByEmail(email);
@@ -142,6 +143,7 @@ public class ReviewService {
 		return review;
 	}
 
+	@Transactional
 	public Review deleteReview(UUID uuid, String email) {
 		Review review = findReview(uuid);
 		User user = userService.getUserByEmail(email);
