@@ -1,23 +1,22 @@
 package com.glimps.glimpsserver.review.application;
 
-import static org.assertj.core.api.AssertionsForInterfaceTypes.*;
-import static org.mockito.BDDMockito.*;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.mockito.BDDMockito.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.mock;
 
+import com.glimps.glimpsserver.review.domain.Review;
+import com.glimps.glimpsserver.review.domain.ReviewHeart;
+import com.glimps.glimpsserver.review.infra.ReviewHeartRepository;
+import com.glimps.glimpsserver.user.domain.RoleType;
+import com.glimps.glimpsserver.user.domain.User;
 import java.util.Optional;
 import java.util.UUID;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import com.glimps.glimpsserver.review.domain.Review;
-import com.glimps.glimpsserver.review.domain.ReviewHeart;
-import com.glimps.glimpsserver.review.infra.ReviewHeartCustomRepository;
-import com.glimps.glimpsserver.review.infra.ReviewHeartRepository;
-import com.glimps.glimpsserver.user.domain.RoleType;
-import com.glimps.glimpsserver.user.domain.User;
 
 @SpringBootTest
 class ReviewHeartServiceTest {
@@ -57,12 +56,11 @@ class ReviewHeartServiceTest {
 		.build();
 
 	private final ReviewHeartRepository reviewHeartRepository = mock(ReviewHeartRepository.class);
-	private final ReviewHeartCustomRepository reviewHeartCustomRepository = mock(ReviewHeartCustomRepository.class);
 	private ReviewHeartService reviewHeartService;
 
 	@BeforeEach
 	void setUp() {
-		reviewHeartService = new ReviewHeartService(reviewHeartRepository, reviewHeartCustomRepository);
+		reviewHeartService = new ReviewHeartService(reviewHeartRepository);
 	}
 
 	@Nested
@@ -105,7 +103,7 @@ class ReviewHeartServiceTest {
 
 			@BeforeEach
 			void setUp() {
-				given(reviewHeartCustomRepository.findByReviewAndUser(EXISTS_REVIEW_UUID, EXISTS_USER_ID))
+				given(reviewHeartRepository.findByReviewAndUser(EXISTS_REVIEW_UUID, EXISTS_USER_ID))
 					.willReturn(Optional.of(reviewHeart));
 			}
 
