@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class GlimpsServerApplication {
+public class GlimsServerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GlimpsServerApplication.class, args);
+		SpringApplication.run(GlimsServerApplication.class, args);
 	}
 
 }

@@ -11,8 +11,7 @@ plugins {
     id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
-group = 'com.glimps'
-version = '0.0.1-SNAPSHOT'
+group = 'com.glims'
 sourceCompatibility = '11'
 
 configurations {
@@ -51,6 +50,12 @@ dependencies {
     implementation 'com.github.dozermapper:dozer-core:6.5.2'
 
     implementation 'com.navercorp.lucy:lucy-xss-servlet:2.0.1'
+
+    implementation 'com.google.guava:guava:11.0.2'
+    implementation 'com.fasterxml.uuid:java-uuid-generator:4.1.0'
+
+    //s3
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.109'
 }
 
 tasks.named('test') {

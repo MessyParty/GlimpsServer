@@ -1,0 +1,44 @@
+spring:
+  config:
+    use-legacy-processing: true
+  profiles:
+    include:
+      - oauth
+      - s3
+  mvc:
+    throw-exception-if-no-handler-found: true
+    path match:
+      matching-strategy: ant_path_matcher
+
+  datasource:
+    url: jdbc:h2:mem:testdb;
+    username: admin
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        default_batch_fetch_size: 100
+    open-in-view: true
+
+  web:
+    resources:
+      add-mappings: off
+
+server:
+  servlet:
+    session:
+      timeout: 60s
+
+token:
+  secret: VMOYV9AlhmyO8quHcWwJUE3dEa2RblfL7QZW4GYzaNZo061ZiEJ8kx8ZWuvlC6Jcj # 64바이트 이상의 문자열
+  access-token-expiration-time: 90000000  # 1500분 100000(ms) x 60(s) x 15(m)
+  refresh-token-expiration-time: 1209600000 # 2주 1000(ms) x 60 (s) x 60(m) x 24(h) x 14(d)
+
+api:
+  prefix: /api/v1
